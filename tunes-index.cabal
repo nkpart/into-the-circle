@@ -1,0 +1,39 @@
+name:                tunes-index
+version:             0.1.0.0
+homepage:            https://github.com/nkpart
+author:              Nick Partridge
+maintainer:          nkpart@gmail.com
+copyright:           2017 Nick Partridge
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+
+executable build
+  main-is:             Build.hs
+  other-modules: 
+    DrWho
+    Extractor
+    Page
+    Types
+    YouTube
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  ghc-options:         -threaded -Wall
+  build-depends:       base >= 4.7 && < 5,
+                       hakyll
+                       , containers
+                       , ansi-wl-pprint 
+                       , text
+                       , reducers
+                       , bifunctors
+                       , wreq
+                       , lens
+                       , lens-aeson
+                       , aeson
+                       , pipes
+                       , mtl
+                       , containers
+                       , time
+                       , directory
+                       , lucid
+                       , process

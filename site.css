@@ -1,0 +1,105 @@
+* {
+    font-family: 'Avenir', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    /*avenir is also good*/
+}
+
+.brand-title,
+.brand-tagline {
+    margin: 0;
+}
+.brand-title {
+    text-transform: uppercase;
+}
+.brand-tagline {
+    font-weight: 300;
+    color: rgb(176, 202, 219);
+}
+
+#layout {
+    padding: 0;
+}
+
+.centered {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.light-fg {
+    color: #fff;
+}
+
+.pl-2 {
+    padding-left: 2em;
+}
+
+.upper {
+    text-transform: uppercase;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.border-bottom {
+    border-bottom: 2px solid;
+}
+
+.p1 {
+    padding: 1em;
+}
+
+.content a {
+    text-decoration: none;
+    color: #7FDBFF; /* acqua */
+}
+
+.content a:visited {
+    color: #7FDBFF;
+        /* blue */
+}
+
+.embiggen {
+    font-size: 160%;
+}
+
+.hover-blue:hover {
+    background: #0074D9;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+@media (min-width: 48em) {
+    .content {
+        /*padding: 0em 3em 0;*/
+        margin-left: 200px;
+    }
+
+    .header {
+        /*padding: 0 25%;*/
+        /*text-align: left;*/
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 200px;
+        margin-left: -200px;
+        width: 200px;
+        top: 0;
+        bottom: 0;
+        overflow-y: scroll;        
+        overflow-x: hidden;
+    }
+
+    .sidebar li a {
+        white-space: normal;
+    }
+
+    .footer {
+        text-align: center;
+    }
+}
