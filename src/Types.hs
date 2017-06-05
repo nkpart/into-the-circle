@@ -27,8 +27,9 @@ newtype Comp =
   Comp Text
   deriving (Eq, Show, Ord)
 
-newtype Band =
-  Band Text
+data Band =
+
+  Band Text | OtherBand
   deriving (Eq, Show, Ord)
 
 newtype Year =
@@ -67,7 +68,7 @@ data VidKey = VidKey
 toSite :: VidKey -> Video -> SiteBuild
 toSite (VidKey a b c d e) v = (Down a `f` (b `f` (c `f` (d `f` (e `f` [v])))))
   where
-    f a b = UnionWith $ M.singleton a b
+    f x y = UnionWith $ M.singleton x y
 
 unpackBuild :: SiteBuild -> Site [Video]
 unpackBuild = coerce

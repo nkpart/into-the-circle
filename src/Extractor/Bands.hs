@@ -1,13 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
 module Extractor.Bands where
 
-import           Control.Applicative
-import           Data.List           (isPrefixOf)
+import           Data.List      (isPrefixOf)
 import           Data.Monoid
 import           Data.Semigroup
-import           Data.Text           (Text, words)
-import           Debug.Trace
-import           Prelude             (Eq, Int, Maybe (..), otherwise, ($))
+import           Data.Text      (Text, words)
+import           Prelude        (Int, Maybe (..), otherwise, ($))
 import           Types
 
 
@@ -100,4 +99,4 @@ strathclyde = Band "Strathclyde Police Pipe Band"
 theVale = Band "The Vale of Atholl Pipe Band"
 toronto = Band "Toronto Police Pipe Band"
 
-otherBand = Band "Other Bands"
+otherBand = OtherBand

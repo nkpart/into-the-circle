@@ -5,17 +5,16 @@ module Extractor where
 import           Control.Applicative (Alternative, empty)
 import           Data.Char           (isDigit)
 import           Data.Foldable       (foldMap)
-import           Data.List           (isPrefixOf, tails)
+import           Data.List           (tails)
 import           Data.Monoid         (Alt (..), (<>))
 import           Data.Semigroup      (Max (..), Option (..))
-import           Data.Text           (Text, all, length, pack, unpack, words)
+import           Data.Text           (Text, all, length, unpack)
 import           Data.Time
 import           Extractor.Bands
 import           Extractor.Comps
 import           Extractor.Remedy
-import           Prelude             (Either (..), Eq, Int, Maybe (..), String,
-                                      otherwise, pure, read, show, (&&), (==),
-                                      (>))
+import           Prelude             (Either (..), Int, Maybe (..), pure, read,
+                                      (&&), (==), (>))
 import           Prelude             (fromInteger, ($), (.), (<$>), (<*>))
 import           Types
 
@@ -26,11 +25,11 @@ extractKey video =
         foldMap reader (tails title) <> foldMap reader (tails body)
       Words title = videoTitleWords video
       Words body = videoDescriptionWords video
-  in do let year = y <.> yearOf (_videoPublishedAt video) -- "No Year" -- TODO Recover from Video published year?
-        (comp, band) <- mergeErrors (c <??> "No Comp") (b <???> "No Band")
-        let set = s <.> Unknown -- TODO Recover from Comp/Year (eg. Brisi)
-            corp = co <.> FullBand
-        pure $ remedy (VidKey year comp band corp set)
+  in do let year' = y <.> yearOf (_videoPublishedAt video) -- "No Year" -- TODO Recover from Video published year?
+        (comp', band') <- mergeErrors (c <??> "No Comp") (b <???> "No Band")
+        let set' = s <.> Unknown -- TODO Recover from Comp/Year (eg. Brisi)
+            corp' = co <.> FullBand
+        pure $ remedy (VidKey year' comp' band' corp' set')
 
 mergeErrors :: Either Text t1 -> Either Text t -> Either Text (t1, t)
 mergeErrors (Right a) (Right b) = Right (a,b)
@@ -60,11 +59,14 @@ corp ("pipers":[])      = pure Pipe
 corp _                  = empty
 
 -- SUPPORT
+(<??>) :: Alt Maybe a -> t -> Either t a
 Alt (Just v) <??> _ = pure v
 Alt (Nothing) <??> m = Left m
 
+(<???>) :: Option (Max (Int, a)) -> t -> Either t a
 Option (Just (Max (_, b))) <???> _ = pure b
 Option Nothing <???> e = Left e
 
+(<.>) :: Alt Maybe t -> t -> t
 Alt (Nothing) <.> v = v
 Alt (Just v) <.> _ = v

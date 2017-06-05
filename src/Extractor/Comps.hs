@@ -55,6 +55,7 @@ comp =
     , "glasgow green" `is` worlds
     , "live back in ireland" `is` liveBackInIreland
     , "paisley" `is` britishChampionship
+    , "cookstown" `is` cookstown
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -91,6 +92,7 @@ northWestChampionships = Comp "North West Championships"
 portrush = Comp "Portrush"
 rostrevor = Comp "Rostrevor"
 vit = Comp "Virginia International Tattoo"
+cookstown = Comp "Cookstown"
 
 -- Solo comps
 ulsterSolos = Comp "Ulster Solos"

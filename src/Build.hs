@@ -28,6 +28,8 @@ usersOfInterest =
   , ChannelId "UCWUlycWU75Txr4yL7s0GWBw" "Craig Rogers"
   , Username "drumsdotcom"
   , Username "jwramsay16"
+  , Username "celticmaps"
+  , Username "imBOSS0224"
   ]
 
 main :: IO ()
@@ -37,7 +39,7 @@ main =
      print (length missing)
      print (length built)
      traverse_ dispError missing
-     renderToFile "sample.html" (template built)
+     renderToFile "index.html" (template built)
      callCommand "open -g sample.html"
 
 dispError :: (Query, Video, Text) -> IO ()
