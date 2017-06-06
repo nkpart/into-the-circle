@@ -31,8 +31,8 @@ template qs (Site s) = do
     body_ [class_ ""] $ do
       div_ [class_ "title pure-g"] $ do
         div_ [class_ "white bg-navy pure-u-1"] $
-         do div_ [class_ "pure-u-1-3 align-right"] (h1_ [class_ "mega-biggen"] "Into the Circle")
-            div_ [class_ "pure-u-2-3"] $ do
+         do div_ [class_ "pure-u-1 pure-u-md-1-3 align-right"] (h1_ [class_ "mega-biggen"] "Into the Circle")
+            div_ [class_ "pure-u-1 pure-u-md-2-3"] $ do
               div_ [class_ "pl-2 silver"] $ do
                 details qs
 
@@ -94,8 +94,8 @@ renderYear (Down (Year y)) inner =
   do
       div_ [class_ "pure-u-1"] $ do
         a_ [name_ (T.pack (show y))] mempty
-        div_ [class_ "pure-u-1-3 align-right bg-maroon white"] (h1_ (toHtml (show y)))
-        div_ [class_ "pure-u-2-3 bg-maroon"] (h1_ x)
+        div_ [class_ "pure-u-1 pure-u-md-1-3 align-right bg-maroon white"] (h1_ (toHtml (show y)))
+        div_ [class_ "pure-u-1 pure-u-md-2-3 bg-maroon jobby"] (h1_ x)
         div_ (S.foldMapWithKey (renderComp (Year y)) inner)
 
 x :: Html ()

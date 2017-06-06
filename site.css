@@ -31,7 +31,16 @@
 }
 
 .align-right {
+    text-align: center;
+}
+
+.jobby { display: none; }
+
+@media (min-width: 48em) {
+.align-right {
     text-align: right;
+}
+.jobby { display: inline-flex; }
 }
 
 .light-fg {
@@ -40,6 +49,7 @@
 
 .pl-2 {
     padding-left: 2em;
+    padding-right:2em;
 }
 
 .upper {
