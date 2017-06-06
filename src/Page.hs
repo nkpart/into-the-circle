@@ -52,6 +52,21 @@ template qs (Site s) = do
       div_ [class_ "content pure-g navy"] $
         S.foldMapWithKey renderYear s
 
+      rawTracking
+
+rawTracking :: Html ()
+rawTracking = toHtmlRaw $ (id :: String -> String) "\
+ \<script>\
+ \ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ \
+ \ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), \
+ \ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) \
+ \ })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); \
+ \\
+ \ ga('create', 'UA-100591266-1', 'auto'); \
+ \ ga('send', 'pageview');\
+ \\
+ \</script>"
+
 details :: [Query] -> Html ()
 details qs =
   let r :: Int -> Query -> Html ()
@@ -116,13 +131,12 @@ renderVid s c vid = li_ [] $ prefix <> (a_ [href_ (videoUrl vid)] (toHtml $ _vid
         showSource (Username u)       = toHtml u
         showSource (ChannelId _ desc) = toHtml desc
         prefix :: Html ()
-        prefix = span_ [] (case s of
+        prefix = (case s of
                     MSR     -> "MSR "
                     Medley  -> "Medley "
                     Unknown -> mempty) <>
-                    span_ [class_ "bold"]
                  (case c of
                    FullBand -> mempty
-                   Pipe     -> "Pipes "
-                   Drum     -> "Drums "
+                   Pipe     -> span_ [class_ "bold"] "Pipes "
+                   Drum     -> span_ [class_ "bold"] "Drums "
                    )
