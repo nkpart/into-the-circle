@@ -15,16 +15,11 @@
     font-size: 100%;
 }
 
-.brand-title,
-.brand-tagline {
+.brand-title {
     margin: 0;
 }
 .brand-title {
     text-transform: uppercase;
-}
-.brand-tagline {
-    font-weight: 300;
-    color: rgb(176, 202, 219);
 }
 
 #layout {
@@ -55,8 +50,16 @@
     font-weight: bold;
 }
 
+.border-top {
+    border-top: 2px solid;
+}
+
 .border-bottom {
-    border-bottom: 2px solid;
+    /*border-bottom: 2px solid;*/
+}
+
+.pt-1 {
+    padding-top: 1em;
 }
 
 .p1 {
@@ -65,12 +68,16 @@
 
 .content a {
     text-decoration: none;
-    color: #7FDBFF; /* acqua */
+    color: #0074D9; /* acqua */
 }
 
 .content a:visited {
-    color: #7FDBFF;
+    color: #0074D9;
         /* blue */
+}
+
+.content a:hover {
+    text-decoration: underline;
 }
 
 .embiggen {
@@ -82,7 +89,7 @@
 }
 
 .hover-blue:hover {
-    background: #0074D9;
+    background: #7FDBFF;
 }
 
 .no-margin {

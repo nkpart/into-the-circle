@@ -8,7 +8,6 @@ module Page where
 
 import           Control.Lens
 import qualified Data.Foldable   as F (for_)
-import           Data.List       (intersperse)
 import qualified Data.Map.Strict as S
 import           Data.Monoid     ((<>))
 import           Data.Ord        (Down (..))
@@ -31,38 +30,44 @@ template qs (Site s) = do
       link_ [ rel_ "stylesheet", href_ "site.css"]
     body_ [class_ ""] $ do
       div_ [class_ "title pure-g"] $ do
-        div_ [class_ "bg-blue white pure-u-1"] $
+        div_ [class_ "white bg-navy pure-u-1"] $
          do div_ [class_ "pure-u-1-3 align-right"] (h1_ [class_ "mega-biggen"] "Into the Circle")
             div_ [class_ "pure-u-2-3"] $ do
-              div_ [class_ "pl-2"] $ do
+              div_ [class_ "pl-2 silver"] $ do
                 details qs
 
       div_ [id_ "layout", class_ ""] $ do
-        div_ [class_ "sidebar bg-navy"] $
+        div_ [class_ "sidebar navy"] $
           div_ [class_ "centered"] $ do
-            h1_ [class_ "brand-title white p1"] "Pick a year"
+            a_ [href_"/"] $ img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+            -- h1_ [class_ "brand-title navy p1"] "Pick a year"
             div_ [class_ "pure-menu"] $
                   F.for_ years $ \(Year y, cs) -> do
                     ul_ [class_ "pure-menu-list"] $
                         li_ [class_ "pure-menu-item"] $ do
-                          a_ [class_ "pure-menu-link white bold hover-blue embiggen", href_ ("#"<> (T.pack (show y))) ] (toHtml (show y))
+                          a_ [class_ "pure-menu-link navy bold hover-white embiggen", href_ ("#"<> (T.pack (show y))) ] (toHtml (show y))
                           F.for_ cs $ \(Comp c) ->
-                            a_ [class_ "pure-menu-link aqua hover-blue", href_ ("#"<> anchor y c ) ] (toHtml c)
+                            a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
 
-      div_ [class_ "content pure-g bg-navy white"] $
+      div_ [class_ "content pure-g navy"] $
         S.foldMapWithKey renderYear s
 
 details :: [Query] -> Html ()
 details qs =
-  let r :: Query -> Html ()
-      r (Username u) = a_ [href_ $ "https://youtube.com/user/" <> u] (toHtml u)
-      r (ChannelId c d) = a_ [href_ $ "https://youtube.com/channel/" <> c] (toHtml d)
+  let r :: Int -> Query -> Html ()
+      r i (Username u) = middy i <> a_ [class_ "bold white", href_ $ "https://youtube.com/user/" <> u] (toHtml u)
+      r i (ChannelId c d) = middy i <> a_ [class_ "bold white", href_ $ "https://youtube.com/channel/" <> c] (toHtml d)
+      middy i | i == 0 = mempty
+              | i == numQs - 1 = " and "
+              | otherwise = ", "
+      numQs = length qs
   in
   do
   p_ "This is an index of recordings made of pipe bands at major and domestic competitions."
   p_ $
    do "Here you can find content by "
-      foldr (>>) (pure ()) (intersperse ", " . fmap r $ qs)
+      sequence_ (imap r $ qs)
+      "."
   p_ "I've attempted to automatically classify the band (and solo) recordings by these fantastic video producers, however the process doesn't always work. Contact me if you spot an error!"
   p_ "- Nick Partridge (nkpart@gmail.com)"
 
@@ -74,8 +79,8 @@ renderYear (Down (Year y)) inner =
   do
       div_ [class_ "pure-u-1"] $ do
         a_ [name_ (T.pack (show y))] mempty
-        div_ [class_ "pure-u-1-3 align-right bg-red white"] (h1_ (toHtml (show y)))
-        div_ [class_ "pure-u-2-3 bg-red"] (h1_ x)
+        div_ [class_ "pure-u-1-3 align-right bg-maroon white"] (h1_ (toHtml (show y)))
+        div_ [class_ "pure-u-2-3 bg-maroon"] (h1_ x)
         div_ (S.foldMapWithKey (renderComp (Year y)) inner)
 
 x :: Html ()
@@ -85,8 +90,8 @@ renderComp :: Year -> Comp -> _ -> Html ()
 renderComp (Year y) (Comp c) inner =
   do
     a_ [name_ (anchor y c)] mempty
-    div_ [class_ "pure-u-1 pure-u-md-1-3 align-right upper"] (h2_ (toHtml c))
-    div_ [class_ "pure-u-1 pure-u-md-2-3"] (div_ [class_ "pl-2"] $ S.foldMapWithKey renderBand inner)
+    div_ [class_ "pure-u-1 pure-u-md-1-3 align-right upper border-top border--olive"] (h2_ (toHtml c))
+    div_ [class_ "pure-u-1 pure-u-md-2-3 border-top border--olive"] (div_ [class_ "pl-2"] $ S.foldMapWithKey renderBand inner)
 
 anchor :: Int -> T.Text -> T.Text
 anchor y c =
@@ -94,22 +99,20 @@ anchor y c =
 
 renderBand :: Band -> _ -> Html ()
 renderBand (b) inner =
-  h3_ [class_ "border-bottom border--red"] (f b) <> div_ (S.foldMapWithKey renderCorp inner)
+  h3_ [class_ "border-bottom border--red"] (f b) <> div_ (ul_ $ S.foldMapWithKey renderCorp inner)
   where f (Band b')=  toHtml b'
         f (OtherBand) = "Other Bands"
 
 renderCorp :: Corp -> _ -> Html ()
-renderCorp c inner = div_ (S.foldMapWithKey (renderSet c) inner)
+renderCorp c = S.foldMapWithKey (renderSet c)
 
 renderSet :: Corp -> Set -> [Video] -> Html ()
-renderSet c s vids =
-  --h5_ (toHtml $ show s) <>
-  ul_ (foldMap (renderVid s c) vids)
+renderSet c s =
+  foldMap (renderVid s c)
 
 renderVid :: Set -> Corp -> Video -> Html ()
 renderVid s c vid = li_ [] $ prefix <> (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid)) <> " [" <> showSource (_videoSource vid) <>  "]"
   where
-
         showSource (Username u)       = toHtml u
         showSource (ChannelId _ desc) = toHtml desc
         prefix :: Html ()

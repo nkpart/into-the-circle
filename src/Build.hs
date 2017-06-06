@@ -34,6 +34,7 @@ usersOfInterest =
   , ChannelId "UCZZS-Dh02rBU_PkJx7SZHWA" "ClanMacRae"
   , Username "rennieaj"
   , Username "LCK217"
+  , Username "ThereIsOnlyOneStuart"
   ]
 
 main :: IO ()
