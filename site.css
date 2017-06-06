@@ -36,6 +36,16 @@
 
 .jobby { display: none; }
 
+li {
+    list-style: none;
+    
+}
+
+ul { padding: 0em }
+@media (min-width: 48em) {
+ul { padding-left: 1em; }
+}
+
 @media (min-width: 48em) {
 .align-right {
     text-align: right;
