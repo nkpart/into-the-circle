@@ -39,7 +39,7 @@ template qs (Site s) = do
       div_ [id_ "layout", class_ ""] $ do
         div_ [class_ "sidebar navy"] $
           div_ [class_ "centered"] $ do
-            a_ [href_"/"] $ img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+            img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
             -- h1_ [class_ "brand-title navy p1"] "Pick a year"
             div_ [class_ "pure-menu"] $
                   F.for_ years $ \(Year y, cs) -> do
