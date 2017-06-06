@@ -13,9 +13,9 @@ import           Data.Time
 import           Extractor.Bands
 import           Extractor.Comps
 import           Extractor.Remedy
-import           Prelude             (Either (..), Int, Maybe (..), pure, read,
-                                      (&&), (==), (>))
-import           Prelude             (fromInteger, ($), (.), (<$>), (<*>))
+import           Prelude             (Either (..), Int, Maybe (..), print, pure,
+                                      read, (&&), (==), (>))
+import           Prelude             (IO, fromInteger, ($), (.), (<$>), (<*>))
 import           Types
 
 extractKey :: Video -> Either Text VidKey
@@ -31,6 +31,12 @@ extractKey video =
         let set' = s <.> Unknown -- TODO Recover from Comp/Year (eg. British champs have been MSR comps)
             corp' = co <.> FullBand
         pure $ remedy (VidKey year' comp' band' corp' set' video)
+
+testTitle :: Text -> IO ()
+testTitle title =
+      do t <- getCurrentTime
+         let video = Video "ID" title "" t (Username "Testing")
+         print (extractKey video)
 
 mergeErrors :: Either Text t1 -> Either Text t -> Either Text (t1, t)
 mergeErrors (Right a) (Right b) = Right (a,b)

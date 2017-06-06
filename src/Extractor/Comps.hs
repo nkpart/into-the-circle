@@ -47,6 +47,7 @@ comp =
     , "united kingdom championships" `is` ukChampionship
     , "mid ulster champions" `is` midUlsterChampionships
     , "mid ulster championships" `is` midUlsterChampionships
+    , "dunbar" `is` dunbar
     , "ulster championships" `is` ulsterChampionships
     , "ulster champions" `is` ulsterChampionships
     , "vit" `is` vit
@@ -58,11 +59,13 @@ comp =
     , "live back in ireland" `is` liveBackInIreland
     , "paisley" `is` britishChampionship
     , "cookstown" `is` cookstown
+    , "alma" `is` alma
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
     --
     , "winterstorm" `is` winterstorm
+    , "winter storm" `is` winterstorm
     , "inveraray ascension" `is` ascensionConcert
     ]
 
@@ -82,6 +85,7 @@ ulsterChampionships = Comp "Ulster Championships"
 midUlsterChampionships = Comp "Mid Ulster Championships"
 
 -- Minors and others
+alma = Comp "Alma"
 annan = Comp "Annan"
 ards = Comp "Ards and North Down"
 bangor = Comp "Bangor"
