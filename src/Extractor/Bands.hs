@@ -46,9 +46,12 @@ band =
     , "police scotland fife" `is` policeScotlandFife
     , "peel regional police" `is` peel
     , "pipes & drums of the psni" `is` psni
+    , "police service of northern ireland" `is` psni
+    -- , "police service of northern ireland pipe band" `is` psni
     , "pipes and drums of the psni" `is` psni
     , "police service northern ireland pipe band" `is` psni
-    , "police service of northern ireland pipe band" `is` psni
+    , "psni pipes and drums" `is` psni
+    , "psni pipes drums" `is` psni
     , "psni pipe band" `is` psni
     , "ravara pipe band" `is` ravara
     , "scottish power" `is` sppb

@@ -17,7 +17,7 @@ correctComp :: Comp -> Year -> Comp
 correctComp origComp year
   | within year 2012 2016 && origComp == forres = europeanChampionship
   | within year 2010 2016 && origComp == dumbarton = scottishChampionship
-
+  | year == Year 2017 && origComp == cookstown = midUlsterChampionships
   | otherwise = origComp
 
 within :: Year -> Int -> Int -> Bool

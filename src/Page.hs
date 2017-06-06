@@ -8,6 +8,7 @@ module Page where
 
 import           Control.Lens
 import qualified Data.Foldable   as F (for_)
+import           Data.List       (intersperse)
 import qualified Data.Map.Strict as S
 import           Data.Monoid     ((<>))
 import           Data.Ord        (Down (..))
@@ -15,8 +16,8 @@ import qualified Data.Text       as T (Text, intercalate, pack, words)
 import           Lucid
 import           Types
 
-template :: Site [Video] -> Html ()
-template (Site s) = do
+template :: [Query] -> Site [Video] -> Html ()
+template qs (Site s) = do
   let years = fmap (_1 %~ getDown) $ S.toList (fmap (S.keys) s)
   doctype_
   html_ $ do
@@ -34,7 +35,7 @@ template (Site s) = do
          do div_ [class_ "pure-u-1-3 align-right"] (h1_ [class_ "mega-biggen"] "Into the Circle")
             div_ [class_ "pure-u-2-3"] $ do
               div_ [class_ "pl-2"] $ do
-                details
+                details qs
 
       div_ [id_ "layout", class_ ""] $ do
         div_ [class_ "sidebar bg-navy"] $
@@ -51,9 +52,19 @@ template (Site s) = do
       div_ [class_ "content pure-g bg-navy white"] $
         S.foldMapWithKey renderYear s
 
-details :: Html ()
-details =
-  p_ ""
+details :: [Query] -> Html ()
+details qs =
+  let r :: Query -> Html ()
+      r (Username u) = a_ [href_ $ "https://youtube.com/user/" <> u] (toHtml u)
+      r (ChannelId c d) = a_ [href_ $ "https://youtube.com/channel/" <> c] (toHtml d)
+  in
+  do
+  p_ "This is an index of recordings made of pipe bands at major and domestic competitions."
+  p_ $
+   do "Here you can find content by "
+      foldr (>>) (pure ()) (intersperse ", " . fmap r $ qs)
+  p_ "I've attempted to automatically classify the band (and solo) recordings by these fantastic video producers, however the process doesn't always work. Contact me if you spot an error!"
+  p_ "- Nick Partridge (nkpart@gmail.com)"
 
 getDown :: Down t -> t
 getDown (Down a) = a

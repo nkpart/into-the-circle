@@ -58,15 +58,16 @@ data Query
 --------------------------------------------------------
 
 data VidKey = VidKey
-  { _vidKeyYear :: Year
-  , _vidKeyComp :: Comp
-  , _vidKeyBand :: Band
-  , _vidKeyCorp :: Corp
-  , _vidKeySet  :: Set
+  { _vidKeyYear  :: Year
+  , _vidKeyComp  :: Comp
+  , _vidKeyBand  :: Band
+  , _vidKeyCorp  :: Corp
+  , _vidKeySet   :: Set
+  , _vidKeyValue :: Video
   } deriving (Eq, Show)
 
-toSite :: VidKey -> Video -> SiteBuild
-toSite (VidKey a b c d e) v = (Down a `f` (b `f` (c `f` (d `f` (e `f` [v])))))
+toSite :: VidKey -> SiteBuild
+toSite (VidKey a b c d e v) = (Down a `f` (b `f` (c `f` (d `f` (e `f` [v])))))
   where
     f x y = UnionWith $ M.singleton x y
 

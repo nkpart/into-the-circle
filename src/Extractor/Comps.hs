@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
 module Extractor.Comps where
 
 import           Control.Applicative
@@ -30,7 +31,6 @@ comp =
     , "europeans" `is` europeanChampionship
     , "forres" `is` forres
     , "gourock" `is` gourock
-    , "inveraray ascension" `is` ascensionConcert
     , "newcastle" `is` newcastle
     , "north berwick" `is` northBerwick
     , "north down" `is` northDownChampionships
@@ -45,6 +45,8 @@ comp =
     , "uk championships" `is` ukChampionship
     , "uk pipe band championships" `is` ukChampionship
     , "united kingdom championships" `is` ukChampionship
+    , "mid ulster champions" `is` midUlsterChampionships
+    , "mid ulster championships" `is` midUlsterChampionships
     , "ulster championships" `is` ulsterChampionships
     , "ulster champions" `is` ulsterChampionships
     , "vit" `is` vit
@@ -59,6 +61,9 @@ comp =
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
+    --
+    , "winterstorm" `is` winterstorm
+    , "inveraray ascension" `is` ascensionConcert
     ]
 
 
@@ -74,10 +79,11 @@ ukChampionship = Comp "UK Championships"
 -- Irish Big Ones
 allIreland = Comp "All Ireland"
 ulsterChampionships = Comp "Ulster Championships"
+midUlsterChampionships = Comp "Mid Ulster Championships"
 
 -- Minors and others
 annan = Comp "Annan"
-ards = Comp "Ards"
+ards = Comp "Ards and North Down"
 bangor = Comp "Bangor"
 dumbarton = Comp "Dumbarton"
 dunbar = Comp "Dunbar"
@@ -100,3 +106,4 @@ ulsterSolos = Comp "Ulster Solos"
 ascensionConcert = Comp "Inveraray ASCENSION"
 pipingLive = Comp "Piping Live"
 liveBackInIreland = Comp "Live Back In Ireland"
+winterstorm = Comp "Winterstorm"

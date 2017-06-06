@@ -22,14 +22,15 @@ extractKey :: Video -> Either Text VidKey
 extractKey video =
   let reader = (,,,,) <$> year <*> comp <*> band <*> set <*> corp
       (y, c, b, s, co) =
-        foldMap reader (tails title) <> foldMap reader (tails body)
+        foldMap reader (tails title) <>
+        foldMap reader (tails body)
       Words title = videoTitleWords video
       Words body = videoDescriptionWords video
-  in do let year' = y <.> yearOf (_videoPublishedAt video) -- "No Year" -- TODO Recover from Video published year?
+  in do let year' = y <.> yearOf (_videoPublishedAt video)
         (comp', band') <- mergeErrors (c <??> "No Comp") (b <???> "No Band")
-        let set' = s <.> Unknown -- TODO Recover from Comp/Year (eg. Brisi)
+        let set' = s <.> Unknown -- TODO Recover from Comp/Year (eg. British champs have been MSR comps)
             corp' = co <.> FullBand
-        pure $ remedy (VidKey year' comp' band' corp' set')
+        pure $ remedy (VidKey year' comp' band' corp' set' video)
 
 mergeErrors :: Either Text t1 -> Either Text t -> Either Text (t1, t)
 mergeErrors (Right a) (Right b) = Right (a,b)

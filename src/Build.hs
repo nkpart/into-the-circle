@@ -8,6 +8,7 @@
 
 module Main where
 
+import           Control.Lens
 import           Data.Foldable      (traverse_)
 import           Data.Text          (Text, intercalate, pack)
 import qualified Data.Text.IO       as T
@@ -30,6 +31,9 @@ usersOfInterest =
   , Username "jwramsay16"
   , Username "celticmaps"
   , Username "imBOSS0224"
+  , ChannelId "UCZZS-Dh02rBU_PkJx7SZHWA" "ClanMacRae"
+  , Username "rennieaj"
+  , Username "LCK217"
   ]
 
 main :: IO ()
@@ -39,16 +43,22 @@ main =
      print (length missing)
      print (length built)
      traverse_ dispError missing
-     renderToFile "index.html" (template built)
-     callCommand "open -g sample.html"
+     renderToFile "index.html" (template usersOfInterest built)
+     callCommand "open -g index.html"
 
-dispError :: (Query, Video, Text) -> IO ()
-dispError (q, vu, reason) =
-  T.putStrLn $ intercalate "," [pack (show q), _videoTitle vu, reason, videoUrl vu]
+dispError :: Uncategorised -> IO ()
+dispError (Uncategorised vu reason) =
+  T.putStrLn $ intercalate "," [pack (show (_videoSource vu)), _videoTitle vu, reason, videoUrl vu]
 
-runUser :: Text -> Query -> IO ([(Query, Video, Text)], SiteBuild)
+runUser :: Text -> Query -> IO ([Uncategorised], SiteBuild)
 runUser apiKey u =
   do us <- cachedVideosForUser apiKey u
-     let process vu =
-          either (\l -> ([(u, vu, l)], mempty)) (\r -> (mempty, toSite r vu)) . extractKey $ vu
+     let process vu = compileSite vu . extractKey $ vu
      pure $ foldMap process us
+
+data Uncategorised = Uncategorised Video Text
+  deriving (Eq, Show)
+
+compileSite :: Video -> Either Text VidKey -> ([Uncategorised], SiteBuild)
+compileSite video =
+  (,) <$> view (_Left . to (pure . Uncategorised video)) <*> view (_Right . to (toSite))

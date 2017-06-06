@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
-
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module YouTube where
 
 import           Control.Lens
@@ -22,6 +22,7 @@ listVideosForUser apiKey user = do
   let xs = Pipes.for (readAllPages apiKey thing Nothing) (traverse_ Pipes.yield)
   fmap (fmap (setSource user)) (Pipes.toListM xs)
 
+setSource :: a1 -> VideoA a -> VideoA a1
 setSource q v = v { _videoSource = q }
 
 readAllPages
