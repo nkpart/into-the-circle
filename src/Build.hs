@@ -10,13 +10,18 @@ module Main where
 
 import           Control.Lens
 import qualified Data.Map.Strict    as S
+import           Data.Monoid
 import           Data.Ord           (Down (..))
-import           Data.Text          (Text, intercalate, pack)
+import           Data.Text          (Text, concat, intercalate, pack)
 import qualified Data.Text.IO       as T
 import           DrWho
 import           Extractor
 import           Lucid
 import           Page
+import           Prelude            (Either (..), Eq, FilePath, IO, Show, fmap,
+                                     foldMap, length, print, pure, show, ($),
+                                     (.), (<$>), (<$>), (<*>))
+
 import           System.Environment (getEnv)
 import           System.Process     (callCommand)
 import           Types
@@ -45,7 +50,7 @@ main = do
     fmap (fmap unpackBuild) $ foldMap (runUser apiKey) usersOfInterest
   print (length missing)
   print (length built)
-  T.writeFile "missing.csv" (intercalate "\n" . fmap (intercalate "," . dispError) $ missing)
+  T.writeFile "missed.csv" . concat . fmap ((<> "\n") . intercalate "," . dispError) $ missing
   renderToFile "index.html" (template usersOfInterest built)
   renderToCsv "index.csv" built
   callCommand "open -g index.html"
@@ -69,8 +74,7 @@ renderToCsv fp (Site site) =
                              let set''' = pack . show $ set'' in
                             fmap (\vid -> [y', comp, band', set''', corp', pack . show $ _videoTitle vid, pack . show $ _videoSource vid])
                            )))))
-  in T.writeFile fp . intercalate "\n" . fmap (intercalate ",") . produceRows $ site
-
+  in T.writeFile fp . concat . fmap ((<> "\n") . intercalate ",") . produceRows $ site
 
 dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =
