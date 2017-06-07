@@ -24,6 +24,7 @@ comp =
     , "british pipe band championship" `is` britishChampionship
     , "british pipe band championships" `is` britishChampionship
     , "british championships" `is` britishChampionship
+    , "bathgate 2013" `is` britishChampionship
     , "dumbarton" `is` dumbarton
     , "dungannon" `is` dungannon
     , "enniskillen" `is` enniskillen
@@ -63,6 +64,8 @@ comp =
     , "cookstown" `is` cookstown
     , "alma" `is` alma
     , "spring gatherin" `is` springGatherin
+    , "moira" `is` moira
+    , "glenarm" `is` glenarm
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -71,7 +74,6 @@ comp =
     , "winter storm" `is` winterstorm
     , "inveraray ascension" `is` ascensionConcert
     , "impact" `is` impact
-
     ]
 
 
@@ -90,6 +92,8 @@ ulsterChampionships = Comp "Ulster Championships"
 midUlsterChampionships = Comp "Mid Ulster Championships"
 
 -- Minors and others
+moira = Comp "Moira"
+glenarm = Comp "Glenarm"
 springGatherin = Comp "Spring Gatherin Belfast"
 alma = Comp "Alma"
 annan = Comp "Annan"
