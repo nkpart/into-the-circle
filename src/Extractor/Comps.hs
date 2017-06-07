@@ -68,6 +68,8 @@ comp =
     , "glenarm" `is` glenarm
     , "newtonards" `is` newtownards
     , "newtownards" `is` newtownards
+    , "perth" `is` perth
+    , "cowal" `is` cowal
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -76,6 +78,7 @@ comp =
     , "winter storm" `is` winterstorm
     , "inveraray ascension" `is` ascensionConcert
     , "impact" `is` impact
+
     ]
 
 
@@ -96,6 +99,8 @@ midUlsterChampionships = Comp "Mid Ulster Championships"
 -- Minors and others
 newtownards = Comp "Newtownards"
 moira = Comp "Moira"
+perth = Comp "Perth"
+cowal = Comp "Cowal"
 glenarm = Comp "Glenarm"
 springGatherin = Comp "Spring Gatherin Belfast"
 alma = Comp "Alma"
