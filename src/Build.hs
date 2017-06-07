@@ -40,6 +40,8 @@ usersOfInterest =
   , Username "LCK217"
   , Username "ThereIsOnlyOneStuart"
   , Username "allynv"
+  , Username "samramsaydrummer"
+  , Username "pipebandfollower"
   ]
 
 main :: IO ()
