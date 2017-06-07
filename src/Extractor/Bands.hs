@@ -45,7 +45,7 @@ band =
     , "new zealand police" `is` nzpb
     , "police scotland fife" `is` policeScotlandFife
     , "peel regional police" `is` peel
-    , "pipes & drums of the psni" `is` psni
+    , "pipes drums of the psni" `is` psni
     , "police service of northern ireland" `is` psni
     -- , "police service of northern ireland pipe band" `is` psni
     , "pipes and drums of the psni" `is` psni
