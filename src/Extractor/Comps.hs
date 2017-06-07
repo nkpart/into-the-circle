@@ -66,6 +66,8 @@ comp =
     , "spring gatherin" `is` springGatherin
     , "moira" `is` moira
     , "glenarm" `is` glenarm
+    , "newtonards" `is` newtownards
+    , "newtownards" `is` newtownards
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -92,6 +94,7 @@ ulsterChampionships = Comp "Ulster Championships"
 midUlsterChampionships = Comp "Mid Ulster Championships"
 
 -- Minors and others
+newtownards = Comp "Newtownards"
 moira = Comp "Moira"
 glenarm = Comp "Glenarm"
 springGatherin = Comp "Spring Gatherin Belfast"
