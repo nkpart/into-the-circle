@@ -60,6 +60,7 @@ comp =
     , "paisley" `is` britishChampionship
     , "cookstown" `is` cookstown
     , "alma" `is` alma
+    , "spring gatherin" `is` springGatherin
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -68,6 +69,7 @@ comp =
     , "winter storm" `is` winterstorm
     , "inveraray ascension" `is` ascensionConcert
     , "impact" `is` impact
+
     ]
 
 
@@ -86,6 +88,7 @@ ulsterChampionships = Comp "Ulster Championships"
 midUlsterChampionships = Comp "Mid Ulster Championships"
 
 -- Minors and others
+springGatherin = Comp "Spring Gatherin Belfast"
 alma = Comp "Alma"
 annan = Comp "Annan"
 ards = Comp "Ards and North Down"
