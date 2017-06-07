@@ -23,10 +23,6 @@ remedy a = execState m a
       when isImpact $ vidKeyYear .= Year 2016
 
       pure ()
-  -- let year = correctYear (_vidKeyYear a)
-  --     cc = correctComp (_vidKeyComp a) year
-  --  in a { _vidKeyYear = year, _vidKeyComp = cc }
-
 
 correctYear :: Year -> Year
 correctYear a
