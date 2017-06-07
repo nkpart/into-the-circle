@@ -1,19 +1,24 @@
 {-# LANGUAGE DeriveFoldable    #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell   #-}
 {-# LANGUAGE TypeOperators     #-}
 module Types where
 
+import           Control.Lens
 import           Data.Char            (isAlphaNum, isDigit)
 import           Data.Coerce          (coerce)
+import           Data.Foldable        (foldMap)
 import qualified Data.List            (filter)
+import qualified Data.List            as L (filter)
 import qualified Data.Map.Strict      as M
 import           Data.Monoid          ((<>))
 import           Data.Ord             (Down (..))
 import           Data.Semigroup.Union (UnionWith (..))
 import           Data.Text            (Text, empty, filter, toLower, words)
 import           Data.Time
-import           Prelude              (Eq, Foldable, Int, Ord, Read, Show, fmap,
-                                       not, ($), (.), (==), (||))
+import           Prelude              (Bool (..), Eq, Foldable, Int, Ord, Read,
+                                       Show, concatMap, fmap, not, ($), (.),
+                                       (==), (||))
 -- Our site is an index
 type SiteBuild = Down Year :=> (Comp :=> (Band :=> (Corp :=> (Set :=> [Video]))))
 type a :=> b = UnionWith (M.Map a) b
@@ -66,13 +71,26 @@ data VidKey = VidKey
   , _vidKeyValue :: Video
   } deriving (Eq, Show)
 
-toSite :: VidKey -> SiteBuild
-toSite (VidKey a b c d e v) = (Down a `f` (b `f` (c `f` (d `f` (e `f` [v])))))
+
+
+toSiteBuild :: VidKey -> SiteBuild
+toSiteBuild (VidKey a b c d e v) = (Down a `f` (b `f` (c `f` (d `f` (e `f` [v])))))
   where
     f x y = UnionWith $ M.singleton x y
 
 unpackBuild :: SiteBuild -> Site [Video]
 unpackBuild = coerce
+
+fromSite :: Site [Video] -> [VidKey]
+fromSite (Site s) = concatMap z . M.toList . flattenMaps . flattenMaps . flattenMaps . flattenMaps $ s
+  where z (((((Down y, c), b), s'), co), v) = fmap (VidKey y c b s' co) v
+
+filterSite :: (VidKey -> Bool) -> Site [Video] -> Site [Video]
+filterSite p  =
+  unpackBuild . foldMap toSiteBuild . L.filter p . fromSite
+
+flattenMaps :: (Ord k1, Ord k2) => M.Map k1 (M.Map k2 v) -> M.Map (k1, k2) v
+flattenMaps = M.fromList . concatMap (\(k1, m2) -> fmap (\(k2,v) -> ((k1,k2),v)) $ M.toList m2) . M.toList
 
 ------------------------------------------------------
 ---- Text Processing
@@ -104,3 +122,5 @@ toWords = Words . Data.List.filter (not . (== empty)) . fmap (filter (\c -> isAl
 
 videoUrl :: Video -> Text
 videoUrl vid = "https://www.youtube.com/watch?v="<> _videoId vid
+
+makeLenses ''VidKey

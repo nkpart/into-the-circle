@@ -67,6 +67,7 @@ comp =
     , "winterstorm" `is` winterstorm
     , "winter storm" `is` winterstorm
     , "inveraray ascension" `is` ascensionConcert
+    , "impact" `is` impact
     ]
 
 
@@ -108,6 +109,7 @@ cookstown = Comp "Cookstown"
 ulsterSolos = Comp "Ulster Solos"
 
 ascensionConcert = Comp "Inveraray ASCENSION"
+impact = Comp "IMPACT"
 pipingLive = Comp "Piping Live"
 liveBackInIreland = Comp "Live Back In Ireland"
 winterstorm = Comp "Winterstorm"

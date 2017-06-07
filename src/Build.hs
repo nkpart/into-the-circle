@@ -1,17 +1,16 @@
-{-# LANGUAGE DeriveAnyClass        #-}
-{-# LANGUAGE DeriveGeneric         #-}
-{-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PartialTypeSignatures #-}
-{-# LANGUAGE RankNTypes            #-}
-{-# LANGUAGE TypeOperators         #-}
+{-# LANGUAGE DeriveAnyClass            #-}
+{-# LANGUAGE DeriveGeneric             #-}
+{-# LANGUAGE FlexibleContexts          #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE OverloadedStrings         #-}
+{-# LANGUAGE PartialTypeSignatures     #-}
+{-# LANGUAGE RankNTypes                #-}
+{-# LANGUAGE TypeOperators             #-}
 
 module Main where
 
 import           Control.Lens
-import qualified Data.Map.Strict    as S
 import           Data.Monoid
-import           Data.Ord           (Down (..))
 import           Data.Text          (Text, concat, intercalate, pack)
 import qualified Data.Text.IO       as T
 import           DrWho
@@ -20,7 +19,7 @@ import           Lucid
 import           Page
 import           Prelude            (Either (..), Eq, FilePath, IO, Show, fmap,
                                      foldMap, length, print, pure, show, ($),
-                                     (.), (<$>), (<$>), (<*>))
+                                     (.), (<$>), (<$>), (<*>), (==))
 
 import           System.Environment (getEnv)
 import           System.Process     (callCommand)
@@ -46,35 +45,23 @@ usersOfInterest =
 main :: IO ()
 main = do
   apiKey <- pack <$> getEnv "YOUTUBE_API_KEY"
-  (missing, built) <-
-    fmap (fmap unpackBuild) $ foldMap (runUser apiKey) usersOfInterest
+  (missing, built) <- (fmap.fmap) unpackBuild $ foldMap (runUser apiKey) usersOfInterest
   print (length missing)
   print (length built)
   T.writeFile "missed.csv" . concat . fmap ((<> "\n") . intercalate "," . dispError) $ missing
   renderToFile "index.html" (template usersOfInterest built)
+  renderToFile "drummers.html" (template usersOfInterest $ filterSite (\vk -> _vidKeyCorp vk == Drum)  built)
   renderToCsv "index.csv" built
   callCommand "open -g index.html"
 
 renderToCsv :: FilePath -> Site [Video] -> IO ()
 renderToCsv fp (Site site) =
   let
+      ps = pack . show
+      row (VidKey (Year y) (Comp c) b co s vid) = [ps y, c, ps b, ps s, ps co, ps $ _videoTitle vid, ps $ _videoSource vid]
       produceRows =
-        S.foldMapWithKey
-          (\(Down (Year y)) ->
-            let y' = pack . show $ y in
-             S.foldMapWithKey
-               (\(Comp comp) ->
-                  S.foldMapWithKey
-                    (\band ->
-                      let band' = pack . show $ band in
-                       S.foldMapWithKey
-                         (\corp'' ->
-                           let corp' = pack . show $ corp'' in
-                           S.foldMapWithKey (\set'' ->
-                             let set''' = pack . show $ set'' in
-                            fmap (\vid -> [y', comp, band', set''', corp', pack . show $ _videoTitle vid, pack . show $ _videoSource vid])
-                           )))))
-  in T.writeFile fp . concat . fmap ((<> "\n") . intercalate ",") . produceRows $ site
+        fmap row . fromSite
+  in T.writeFile fp . concat . fmap ((<> "\n") . intercalate ",") . produceRows $ Site site
 
 dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =
@@ -94,4 +81,4 @@ data Uncategorised =
 compileSite :: Video -> Either Text VidKey -> ([Uncategorised], SiteBuild)
 compileSite video =
   (,) <$> view (_Left . to (pure . Uncategorised video)) <*>
-  view (_Right . to (toSite))
+  view (_Right . to (toSiteBuild))
