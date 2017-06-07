@@ -35,6 +35,7 @@ comp =
     , "north berwick" `is` northBerwick
     , "north down" `is` northDownChampionships
     , "north west championships" `is` northWestChampionships
+    , "north west pipe band championships" `is` northWestChampionships
     , "piping live" `is` pipingLive
     , "portrush" `is` portrush
     , "rostrevor" `is` rostrevor
@@ -54,6 +55,7 @@ comp =
     , "world champions" `is` worlds
     , "world championships" `is` worlds
     , "world pipe band championships" `is` worlds
+    , "world pipe band champiosnhips" `is` worlds
     , "worlds" `is` worlds
     , "glasgow green" `is` worlds
     , "live back in ireland" `is` liveBackInIreland
