@@ -23,6 +23,7 @@ band :: [Text] -> Option (Max (Int, Band))
 band =
   findFirstMatch
     [ "78th fraser highlanders" `is` _78thsFraserHighlanders
+    , "78th highlanders halifax" `is` _78thHalifax
     , "auckland district" `is` auckland
     , "bleary & district" `is` blearyAndDistrict
     , "bleary district" `is` blearyAndDistrict -- todo dont drop ampersands
@@ -75,6 +76,7 @@ soloist = Band "Soloists"
 
 -- TODO: Bands have grades, but they changes Year to Year
 _78thsFraserHighlanders = Band "78th Fraser Highlanders"
+_78thHalifax = Band "78th Halifax Citadel Pipe Band"
 auckland = Band "Auckland & District Pipe Band"
 blearyAndDistrict = Band "Bleary and District Pipe Band"
 boghall = Band "Peoples Ford Boghall and Bathgate Caledonia"
