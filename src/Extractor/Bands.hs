@@ -69,6 +69,7 @@ band =
     --- Really want to match this last I think
     , "solos" `is` soloist
     , "solo" `is` soloist
+    , "todds bar recital" `is` soloist
     , "pipe band" `isLow` otherBand
     ]
 

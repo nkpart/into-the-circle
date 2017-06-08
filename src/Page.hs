@@ -15,9 +15,15 @@ import qualified Data.Text     as T (Text, intercalate, pack, words)
 import           Lucid
 import           Types
 
+compsByYear :: Site t -> [(Year, [Comp])]
+compsByYear (Site s) =
+  fmap (_1 %~ getDown) $ fmap (fmap (fmap fst)) s
+  where
+  getDown (Down a) = a
+
+
 template :: [Query] -> Site (Seq Video) -> Html ()
-template qs (Site s) = do
-  let years = fmap (_1 %~ getDown) $ fmap (fmap (fmap fst)) s
+template qs site@(Site s) = do
   doctype_
   html_ $ do
     head_ $ do
@@ -40,9 +46,8 @@ template qs (Site s) = do
         div_ [class_ "sidebar navy"] $
           div_ [class_ "centered"] $ do
             img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
-            -- h1_ [class_ "brand-title navy p1"] "Pick a year"
             div_ [class_ "pure-menu"] $
-                  F.for_ years $ \(Year y, cs) -> do
+                  F.for_ (compsByYear site) $ \(Year y, cs) -> do
                     ul_ [class_ "pure-menu-list"] $
                         li_ [class_ "pure-menu-item"] $ do
                           a_ [class_ "pure-menu-link navy bold hover-white embiggen", href_ ("#"<> (T.pack (show y))) ] (toHtml (show y))
@@ -50,7 +55,7 @@ template qs (Site s) = do
                             a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
 
       div_ [class_ "content pure-g navy"] $
-        foldMap renderYear s
+        F.for_ s renderYear
 
       rawTracking
 
@@ -86,20 +91,16 @@ details qs =
   p_ "I've attempted to automatically classify the band (and solo) recordings by these fantastic video producers, however the process doesn't always work. Contact me if you spot an error!"
   p_ "- Nick Partridge (nkpart@gmail.com)"
 
-getDown :: Down t -> t
-getDown (Down a) = a
-
 renderYear :: (Down Year, _) -> Html ()
 renderYear (Down (Year y), inner) =
-  do
       div_ [class_ "pure-u-1"] $ do
         a_ [name_ (T.pack (show y))] mempty
         div_ [class_ "pure-u-1 pure-u-md-1-3 align-right bg-maroon white"] (h1_ (toHtml (show y)))
-        div_ [class_ "pure-u-1 pure-u-md-2-3 bg-maroon jobby"] (h1_ x)
+        div_ [class_ "pure-u-1 pure-u-md-2-3 bg-maroon jobby"] (h1_ blankSpan)
         div_ (foldMap (renderComp (Year y)) inner)
 
-x :: Html ()
-x = span_ (toHtmlRaw ("&nbsp;"::String))
+blankSpan :: Html ()
+blankSpan = span_ (toHtmlRaw ("&nbsp;"::String))
 
 renderComp :: Year -> (Comp, _) -> Html ()
 renderComp (Year y) (Comp c, inner) =
@@ -114,7 +115,9 @@ anchor y c =
 
 renderBand :: (Band, _) -> Html ()
 renderBand (b, inner) =
-  h3_ [class_ "border-bottom border--red"] (f b) <> div_ (ul_ $ foldMap renderCorp inner)
+  do
+  h3_ [class_ "border-bottom border--red"] (f b)
+  div_ (ul_ $ foldMap renderCorp inner)
   where f (Band b')=  toHtml b'
         f (OtherBand) = "Other Bands"
 
