@@ -7,17 +7,17 @@
 module Page where
 
 import           Control.Lens
-import qualified Data.Foldable   as F (for_)
-import qualified Data.Map.Strict as S
-import           Data.Monoid     ((<>))
-import           Data.Ord        (Down (..))
-import qualified Data.Text       as T (Text, intercalate, pack, words)
+import qualified Data.Foldable as F (for_)
+import           Data.Monoid   ((<>))
+import           Data.Ord      (Down (..))
+import           Data.Sequence (Seq)
+import qualified Data.Text     as T (Text, intercalate, pack, words)
 import           Lucid
 import           Types
 
-template :: [Query] -> Site [Video] -> Html ()
+template :: [Query] -> Site (Seq Video) -> Html ()
 template qs (Site s) = do
-  let years = fmap (_1 %~ getDown) $ S.toList (fmap (S.keys) s)
+  let years = fmap (_1 %~ getDown) $ fmap (fmap (fmap fst)) s
   doctype_
   html_ $ do
     head_ $ do
@@ -50,7 +50,7 @@ template qs (Site s) = do
                             a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
 
       div_ [class_ "content pure-g navy"] $
-        S.foldMapWithKey renderYear s
+        foldMap renderYear s
 
       rawTracking
 
@@ -89,41 +89,41 @@ details qs =
 getDown :: Down t -> t
 getDown (Down a) = a
 
-renderYear :: Down Year -> _ -> Html ()
-renderYear (Down (Year y)) inner =
+renderYear :: (Down Year, _) -> Html ()
+renderYear (Down (Year y), inner) =
   do
       div_ [class_ "pure-u-1"] $ do
         a_ [name_ (T.pack (show y))] mempty
         div_ [class_ "pure-u-1 pure-u-md-1-3 align-right bg-maroon white"] (h1_ (toHtml (show y)))
         div_ [class_ "pure-u-1 pure-u-md-2-3 bg-maroon jobby"] (h1_ x)
-        div_ (S.foldMapWithKey (renderComp (Year y)) inner)
+        div_ (foldMap (renderComp (Year y)) inner)
 
 x :: Html ()
 x = span_ (toHtmlRaw ("&nbsp;"::String))
 
-renderComp :: Year -> Comp -> _ -> Html ()
-renderComp (Year y) (Comp c) inner =
+renderComp :: Year -> (Comp, _) -> Html ()
+renderComp (Year y) (Comp c, inner) =
   do
     a_ [name_ (anchor y c)] mempty
     div_ [class_ "pure-u-1 pure-u-md-1-3 align-right upper border-top border--olive"] (h2_ (toHtml c))
-    div_ [class_ "pure-u-1 pure-u-md-2-3 border-top border--olive"] (div_ [class_ "pl-2"] $ S.foldMapWithKey renderBand inner)
+    div_ [class_ "pure-u-1 pure-u-md-2-3 border-top border--olive"] (div_ [class_ "pl-2"] $ foldMap renderBand inner)
 
 anchor :: Int -> T.Text -> T.Text
 anchor y c =
   T.pack (show y) <> "-" <> T.intercalate "-" (T.words c)
 
-renderBand :: Band -> _ -> Html ()
-renderBand (b) inner =
-  h3_ [class_ "border-bottom border--red"] (f b) <> div_ (ul_ $ S.foldMapWithKey renderCorp inner)
+renderBand :: (Band, _) -> Html ()
+renderBand (b, inner) =
+  h3_ [class_ "border-bottom border--red"] (f b) <> div_ (ul_ $ foldMap renderCorp inner)
   where f (Band b')=  toHtml b'
         f (OtherBand) = "Other Bands"
 
-renderCorp :: Corp -> _ -> Html ()
-renderCorp c = S.foldMapWithKey (renderSet c)
+renderCorp :: (Corp, _) -> Html ()
+renderCorp (c,v) = foldMap (renderSet c) v
 
-renderSet :: Corp -> Set -> [Video] -> Html ()
-renderSet c s =
-  foldMap (renderVid s c)
+renderSet :: Corp -> (Set, Seq Video) -> Html ()
+renderSet c (s, v) =
+  foldMap (renderVid s c) v
 
 renderVid :: Set -> Corp -> Video -> Html ()
 renderVid s c vid = li_ [] $ prefix <> (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid)) <> " [" <> showSource (_videoSource vid) <>  "]"

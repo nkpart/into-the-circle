@@ -10,7 +10,9 @@
 module Main where
 
 import           Control.Lens
+import           Data.Foldable      (fold)
 import           Data.Monoid
+import           Data.Sequence      (Seq)
 import           Data.Text          (Text, concat, intercalate, pack)
 import qualified Data.Text.IO       as T
 import           DrWho
@@ -57,14 +59,14 @@ main = do
   renderToCsv "index.csv" built
   callCommand "open -g index.html"
 
-renderToCsv :: FilePath -> Site [Video] -> IO ()
+renderToCsv :: FilePath -> Site (Seq Video) -> IO ()
 renderToCsv fp (Site site) =
   let
       ps = pack . show
       row (VidKey (Year y) (Comp c) b co s vid) = [ps y, c, ps b, ps s, ps co, ps $ _videoTitle vid, ps $ _videoSource vid]
       produceRows =
         fmap row . fromSite
-  in T.writeFile fp . concat . fmap ((<> "\n") . intercalate ",") . produceRows $ Site site
+  in T.writeFile fp . fold . fmap ((<> "\n") . intercalate ",") . produceRows $ Site site
 
 dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =

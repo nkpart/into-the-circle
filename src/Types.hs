@@ -9,21 +9,23 @@ import           Data.Char            (isAlphaNum, isDigit)
 import           Data.Coerce          (coerce)
 import           Data.Foldable        (foldMap)
 import qualified Data.List            (filter)
-import qualified Data.List            as L (filter)
+import qualified Data.List            as L ()
 import qualified Data.Map.Strict      as M
 import           Data.Monoid          ((<>))
 import           Data.Ord             (Down (..))
 import           Data.Semigroup.Union (UnionWith (..))
-import           Data.Text            (Text, empty, filter, toLower, words)
+import           Data.Sequence        (Seq, filter, fromList)
+import           Data.Text            (Text, empty, toLower, words)
+import qualified Data.Text            as T (filter)
 import           Data.Time
 import           Prelude              (Bool (..), Eq, Foldable, Int, Ord, Read,
-                                       Show, concatMap, fmap, not, ($), (.),
+                                       Show, fmap, not, pure, ($), (.), (=<<),
                                        (==), (||))
 -- Our site is an index
-type SiteBuild = Down Year :=> (Comp :=> (Band :=> (Corp :=> (Set :=> [Video]))))
+type SiteBuild = Down Year :=> (Comp :=> (Band :=> (Corp :=> (Set :=> Seq Video))))
 type a :=> b = UnionWith (M.Map a) b
 
-newtype Site a = Site (M.Map (Down Year) (M.Map Comp (M.Map Band (M.Map Corp (M.Map Set a)))))
+newtype Site a = Site ([(Down Year, [(Comp, [(Band, [(Corp, [(Set, a)])])])])])
   deriving (Eq, Show, Foldable)
 
 ------------------------------------------------------
@@ -74,23 +76,24 @@ data VidKey = VidKey
 
 
 toSiteBuild :: VidKey -> SiteBuild
-toSiteBuild (VidKey a b c d e v) = (Down a `f` (b `f` (c `f` (d `f` (e `f` [v])))))
+toSiteBuild (VidKey a b c d e v) = (Down a `f` (b `f` (c `f` (d `f` (e `f` pure v)))))
   where
     f x y = UnionWith $ M.singleton x y
 
-unpackBuild :: SiteBuild -> Site [Video]
-unpackBuild = coerce
+unpackBuild :: SiteBuild -> Site (Seq Video)
+unpackBuild =
+  Site . M.toList . fmap M.toList . (fmap.fmap) M.toList . (fmap.fmap.fmap) M.toList . (fmap.fmap.fmap.fmap) M.toList . coerce
 
-fromSite :: Site [Video] -> [VidKey]
-fromSite (Site s) = concatMap z . M.toList . flattenMaps . flattenMaps . flattenMaps . flattenMaps $ s
+fromSite :: Site (Seq Video) -> (Seq VidKey)
+fromSite (Site s) = (=<<) z . fromList . flattenMaps . flattenMaps . flattenMaps . flattenMaps $ s
   where z (((((Down y, c), b), s'), co), v) = fmap (VidKey y c b s' co) v
 
-filterSite :: (VidKey -> Bool) -> Site [Video] -> Site [Video]
+filterSite :: (VidKey -> Bool) -> Site (Seq Video) -> Site (Seq Video)
 filterSite p  =
-  unpackBuild . foldMap toSiteBuild . L.filter p . fromSite
+  unpackBuild . foldMap toSiteBuild . filter p . fromSite
 
-flattenMaps :: (Ord k1, Ord k2) => M.Map k1 (M.Map k2 v) -> M.Map (k1, k2) v
-flattenMaps = M.fromList . concatMap (\(k1, m2) -> fmap (\(k2,v) -> ((k1,k2),v)) $ M.toList m2) . M.toList
+flattenMaps :: [(t1, [(t, t2)])] -> [((t1, t), t2)]
+flattenMaps = (=<<) (\(k1, m2) -> fmap (\(k2,v) -> ((k1,k2),v)) $ m2)
 
 ------------------------------------------------------
 ---- Text Processing
@@ -118,7 +121,7 @@ newtype Words =
   deriving (Eq, Show)
 
 toWords :: Text -> Words
-toWords = Words . Data.List.filter (not . (== empty)) . fmap (filter (\c -> isAlphaNum c || isDigit c)) . words . toLower
+toWords = Words . Data.List.filter (not . (== empty)) . fmap (T.filter (\c -> isAlphaNum c || isDigit c)) . words . toLower
 
 videoUrl :: Video -> Text
 videoUrl vid = "https://www.youtube.com/watch?v="<> _videoId vid
