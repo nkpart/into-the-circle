@@ -7,6 +7,7 @@ import           Data.Char           (isDigit)
 import           Data.Foldable       (foldMap)
 import           Data.List           (tails)
 import           Data.Monoid         (Alt (..), (<>))
+import           Data.Ord
 import           Data.Semigroup      (Max (..), Option (..))
 import           Data.Text           (Text, all, length, unpack)
 import           Data.Time
@@ -30,7 +31,7 @@ extractKey video =
         (comp', band') <- mergeErrors (c <??> "No Comp") (b <???> "No Band")
         let set' = s <.> Unknown -- TODO Recover from Comp/Year (eg. British champs have been MSR comps)
             corp' = co <.> FullBand
-        pure $ remedy (VidKey year' comp' band' corp' set' video)
+        pure $ remedy (VidKey (Down year') comp' band' corp' set' video)
 
 testTitle :: Text -> IO ()
 testTitle title =

@@ -5,25 +5,23 @@
 module Types where
 
 import           Control.Lens
-import           Data.Char            (isAlphaNum, isDigit)
-import           Data.Coerce          (coerce)
-import           Data.Foldable        (foldMap)
-import qualified Data.List            (filter)
-import qualified Data.List            as L ()
-import qualified Data.Map.Strict      as M
-import           Data.Monoid          ((<>))
-import           Data.Ord             (Down (..))
-import           Data.Semigroup.Union (UnionWith (..))
-import           Data.Sequence        (Seq, filter, fromList)
-import           Data.Text            (Text, empty, toLower, words)
-import qualified Data.Text            as T (filter)
+import           Data.Char       (isAlphaNum, isDigit)
+import           Data.Coerce     (coerce)
+import           Data.Foldable   (foldl')
+import qualified Data.List       (filter)
+import qualified Data.List       as L ()
+import qualified Data.Map.Strict as M
+import           Data.Monoid     (mempty, (<>))
+import           Data.Ord        (Down (..))
+import           Data.Sequence   (Seq)
+import           Data.Text       (Text, empty, toLower, words)
+import qualified Data.Text       as T (filter)
 import           Data.Time
-import           Prelude              (Bool (..), Eq, Foldable, Int, Ord, Read,
-                                       Show, fmap, not, pure, ($), (.), (=<<),
-                                       (==), (||))
+import           Prelude         (Eq, Foldable, Int, Ord, Read, Show, fmap, not,
+                                  pure, ($), (.), (==), (||))
 -- Our site is an index
 type SiteBuild = Down Year :=> (Comp :=> (Band :=> (Corp :=> (Set :=> Seq Video))))
-type a :=> b = UnionWith (M.Map a) b
+type a :=> b = M.Map a b
 
 newtype Site a = Site ([(Down Year, [(Comp, [(Band, [(Corp, [(Set, a)])])])])])
   deriving (Eq, Show, Foldable)
@@ -65,35 +63,29 @@ data Query
 --------------------------------------------------------
 
 data VidKey = VidKey
-  { _vidKeyYear  :: Year
-  , _vidKeyComp  :: Comp
-  , _vidKeyBand  :: Band
-  , _vidKeyCorp  :: Corp
-  , _vidKeySet   :: Set
-  , _vidKeyValue :: Video
-  } deriving (Eq, Show)
+  { _vidKeyDownYear :: Down Year
+  , _vidKeyComp     :: Comp
+  , _vidKeyBand     :: Band
+  , _vidKeyCorp     :: Corp
+  , _vidKeySet      :: Set
+  , _vidKeyValue    :: Video
+  } deriving (Eq, Show, Ord)
 
+_Down :: Simple Iso (Down a) a
+_Down = iso (\(Down a) -> a) Down
 
+buildSite :: [VidKey] -> Site (Seq Video)
+buildSite = unpackBuild . foldl' insertVidKey mempty
 
-toSiteBuild :: VidKey -> SiteBuild
-toSiteBuild (VidKey a b c d e v) = (Down a `f` (b `f` (c `f` (d `f` (e `f` pure v)))))
+insertVidKey :: SiteBuild -> VidKey -> SiteBuild
+insertVidKey sb (VidKey a b c d e v) =
+  M.insertWith (M.unionWith (M.unionWith (M.unionWith (M.unionWith (<>))))) a xxx sb
   where
-    f x y = UnionWith $ M.singleton x y
+    xxx = M.singleton b . M.singleton c . M.singleton d . M.singleton e . pure $ v
 
 unpackBuild :: SiteBuild -> Site (Seq Video)
 unpackBuild =
   Site . M.toList . fmap M.toList . (fmap.fmap) M.toList . (fmap.fmap.fmap) M.toList . (fmap.fmap.fmap.fmap) M.toList . coerce
-
-fromSite :: Site (Seq Video) -> (Seq VidKey)
-fromSite (Site s) = (=<<) z . fromList . flattenMaps . flattenMaps . flattenMaps . flattenMaps $ s
-  where z (((((Down y, c), b), s'), co), v) = fmap (VidKey y c b s' co) v
-
-filterSite :: (VidKey -> Bool) -> Site (Seq Video) -> Site (Seq Video)
-filterSite p  =
-  unpackBuild . foldMap toSiteBuild . filter p . fromSite
-
-flattenMaps :: [(t1, [(t, t2)])] -> [((t1, t), t2)]
-flattenMaps = (=<<) (\(k1, m2) -> fmap (\(k2,v) -> ((k1,k2),v)) $ m2)
 
 ------------------------------------------------------
 ---- Text Processing
@@ -104,7 +96,7 @@ data VideoA a = Video
   , _videoDescription :: Text
   , _videoPublishedAt :: UTCTime
   , _videoSource      :: a
-  } deriving (Eq, Show, Read)
+  } deriving (Eq, Show, Read, Ord)
 
 type UnsourcedVideo = VideoA ()
 
@@ -127,3 +119,6 @@ videoUrl :: Video -> Text
 videoUrl vid = "https://www.youtube.com/watch?v="<> _videoId vid
 
 makeLenses ''VidKey
+
+vidKeyYear :: Simple Lens VidKey Year
+vidKeyYear = vidKeyDownYear . _Down

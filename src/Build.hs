@@ -10,19 +10,19 @@
 module Main where
 
 import           Control.Lens
-import           Data.Foldable      (fold)
+import           Data.Either        (partitionEithers)
+import           Data.List          (sort)
 import           Data.Monoid
-import           Data.Sequence      (Seq)
-import           Data.Text          (Text, concat, intercalate, pack)
+import           Data.Ord
+import           Data.Text          (Text, intercalate, pack)
 import qualified Data.Text.IO       as T
 import           DrWho
 import           Extractor
 import           Lucid
 import           Page
-import           Prelude            (Either (..), Eq, FilePath, IO, Show, fmap,
-                                     foldMap, length, print, pure, show, ($),
-                                     (.), (<$>), (<$>), (<*>), (==))
-
+import           Prelude            (Eq, FilePath, Foldable, IO, Show, filter,
+                                     fmap, foldMap, length, print, pure, show,
+                                     ($), (.), (<$>), (<$>), (==))
 import           System.Environment (getEnv)
 import           System.Process     (callCommand)
 import           Types
@@ -46,45 +46,38 @@ usersOfInterest =
   , Username "pipebandfollower"
   , Username "piperbob2"
   , Username "weekendsinontario"
+  , Username "quickmarch"
   ]
 
 main :: IO ()
 main = do
   apiKey <- pack <$> getEnv "YOUTUBE_API_KEY"
-  (missing, built) <- (fmap.fmap) unpackBuild $ foldMap (runUser apiKey) usersOfInterest
+  (missing, built) <- foldMap (runUser apiKey) usersOfInterest
   print (length missing)
   print (length built)
-  T.writeFile "missed.csv" . concat . fmap ((<> "\n") . intercalate "," . dispError) $ missing
-  renderToFile "index.html" (template usersOfInterest built)
-  renderToFile "drummers.html" (template usersOfInterest $ filterSite (\vk -> _vidKeyCorp vk == Drum)  built)
-  renderToCsv "index.csv" built
+  T.writeFile "missed.csv" . foldMap ((<> "\n") . intercalate "," . dispError) $ missing
+  renderToFile "index.html" (template usersOfInterest $ buildSite built)
+  let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) built
+  renderToFile "drummers.html" (template usersOfInterest $ buildSite justDrumming)
+  renderToCsv "index.csv" (sort built)
   callCommand "open -g index.html"
 
-renderToCsv :: FilePath -> Site (Seq Video) -> IO ()
-renderToCsv fp (Site site) =
-  let
-      ps = pack . show
-      row (VidKey (Year y) (Comp c) b co s vid) = [ps y, c, ps b, ps s, ps co, ps $ _videoTitle vid, ps $ _videoSource vid]
-      produceRows =
-        fmap row . fromSite
-  in T.writeFile fp . fold . fmap ((<> "\n") . intercalate ",") . produceRows $ Site site
+renderToCsv :: Foldable t => FilePath -> t VidKey -> IO ()
+renderToCsv fp vids =
+  let ps = pack . show
+      row (VidKey (Down (Year y)) (Comp c) b co s vid) = [ps y, c, ps b, ps s, ps co, ps $ _videoTitle vid, ps $ _videoSource vid]
+  in T.writeFile fp . foldMap ((<> "\n") . intercalate "," . row) $ vids
 
 dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =
     [pack (show (_videoSource vu)), _videoTitle vu, reason, videoUrl vu]
 
-runUser :: Text -> Query -> IO ([Uncategorised], SiteBuild)
+runUser :: Text -> Query -> IO ([Uncategorised], [VidKey])
 runUser apiKey u = do
   us <- cachedVideosForUser apiKey u
-  let process vu = compileSite vu . extractKey $ vu
-  pure $ foldMap process us
+  let process vu = (_Left %~ Uncategorised vu) . extractKey $ vu
+  pure . partitionEithers . fmap process $ us
 
 data Uncategorised =
-  Uncategorised Video
-                Text
+  Uncategorised Video Text
   deriving (Eq, Show)
-
-compileSite :: Video -> Either Text VidKey -> ([Uncategorised], SiteBuild)
-compileSite video =
-  (,) <$> view (_Left . to (pure . Uncategorised video)) <*>
-  view (_Right . to (toSiteBuild))
