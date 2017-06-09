@@ -24,11 +24,6 @@ remedy a = execState m a
 
       pure ()
 
-correctYear :: Year -> Year
-correctYear a
-  | a == Year 2106 = Year 2016
-  | otherwise = a
-
 correctComp :: Comp -> Year -> Comp
 correctComp origComp year
   | within year 2012 2016 && origComp == forres = europeanChampionship
