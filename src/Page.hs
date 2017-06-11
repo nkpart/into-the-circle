@@ -12,10 +12,11 @@ import           Data.Monoid   ((<>))
 import           Data.Ord      (Down (..))
 import           Data.Sequence (Seq)
 import qualified Data.Text     as T (Text, intercalate, pack, words)
+import           Data.Time
 import           Lucid
 import           Types
 
-compsByYear :: Site t -> [(Year, [Comp])]
+compsByYear :: Site t -> [(Year, [(Comp, _)])]
 compsByYear (Site s) =
   fmap (_1 %~ getDown) $ fmap (fmap (fmap fst)) s
   where
@@ -51,7 +52,7 @@ template qs site@(Site s) = do
                     ul_ [class_ "pure-menu-list"] $
                         li_ [class_ "pure-menu-item"] $ do
                           a_ [class_ "pure-menu-link navy bold hover-white embiggen", href_ ("#"<> (T.pack (show y))) ] (toHtml (show y))
-                          F.for_ cs $ \(Comp c) ->
+                          F.for_ cs $ \(Comp c, _) ->
                             a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
 
       div_ [class_ "content pure-g navy"] $
@@ -102,11 +103,13 @@ renderYear (Down (Year y), inner) =
 blankSpan :: Html ()
 blankSpan = span_ (toHtmlRaw ("&nbsp;"::String))
 
-renderComp :: Year -> (Comp, _) -> Html ()
-renderComp (Year y) (Comp c, inner) =
+renderComp :: Year -> ((Comp, UTCTime), _) -> Html ()
+renderComp (Year y) ((Comp c, cd), inner) =
   do
     a_ [name_ (anchor y c)] mempty
-    div_ [class_ "pure-u-1 pure-u-md-1-3 align-right upper border-top border--olive"] (h2_ (toHtml c))
+    div_ [class_ "pure-u-1 pure-u-md-1-3 align-right upper border-top border--olive"] $ do
+     h2_ (toHtml c)
+     -- h3_ (toHtml $ formatTime defaultTimeLocale "%Y-%m-%d" cd )
     div_ [class_ "pure-u-1 pure-u-md-2-3 border-top border--olive"] (div_ [class_ "pl-2"] $ foldMap renderBand inner)
 
 anchor :: Int -> T.Text -> T.Text

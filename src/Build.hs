@@ -53,8 +53,10 @@ main :: IO ()
 main = do
   apiKey <- pack <$> getEnv "YOUTUBE_API_KEY"
   (missing, built) <- foldMap (runUser apiKey) usersOfInterest
+
   print (length missing)
   print (length built)
+
   T.writeFile "missed.csv" . foldMap ((<> "\n") . intercalate "," . dispError) $ missing
   renderToFile "index.html" (template usersOfInterest $ buildSite built)
   let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) built
