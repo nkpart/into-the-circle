@@ -8,32 +8,65 @@ category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
 
-executable build
-  main-is:             Build.hs
-  other-modules: 
+library
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+  exposed-modules: 
     DrWho
     Extractor
+    Extractor.Bands
+    Extractor.Comps
+    Extractor.Remedy
+    Extractor.Util
     Page
     Types
     YouTube
-  hs-source-dirs:      src
-  default-language:    Haskell2010
-  ghc-options:         -threaded -Wall -Werror
-  build-depends:       base >= 4.7 && < 5,
-                       hakyll
+
+  build-depends:
+        base >= 3 && < 5
+      , hakyll
                        , containers
-                       , ansi-wl-pprint 
                        , text
                        , reducers
-                       , bifunctors
                        , wreq
                        , lens
                        , lens-aeson
                        , aeson
-                       , pipes
                        , mtl
                        , containers
                        , time
                        , directory
                        , lucid
                        , process
+                       , pipes
+
+executable build
+  main-is:             src/Build.hs
+  default-language:    Haskell2010
+  ghc-options:         -threaded -Wall -Werror
+  build-depends:       base >= 4.7 && < 5
+                       , tunes-index
+                       , containers
+                       , ansi-wl-pprint 
+                       , text
+                       , wreq
+                       , lens
+                       , lens-aeson
+                       , aeson
+                       , mtl
+                       , containers
+                       , time
+                       , directory
+                       , lucid
+                       , process
+
+test-suite test
+  default-language: Haskell2010
+  type: exitcode-stdio-1.0
+  main-is: test.hs
+  hs-source-dirs: test
+  build-depends:
+      base >= 3 && < 5
+    , tunes-index
+    , QuickCheck >= 2.9.2 && < 2.10
+    , quickcheck-instances == 0.3.*                       

@@ -1,3 +1,4 @@
+{-# LANGUAGE MultiParamTypeClasses #-}
 module Extractor.Remedy where
 
 import           Control.Applicative
@@ -11,25 +12,39 @@ remedy a = execState m a
   where
     m = do
       -- Correct for typo
-      is2106 <- uses vidKeyYear (== Year 2106)
-      when is2106 $ vidKeyYear .= Year 2016
+      isEq vidKeyYear (Year 2106) $ vidKeyYear .= Year 2016
 
-      -- Set up some Majors
-      correctedComp <- liftA2 correctComp (use vidKeyComp) (use vidKeyYear)
-      vidKeyComp .= correctedComp
+      is vidKeyYear (within 2012 2016) .
+        isEq vidKeyComp forres $ vidKeyComp .= europeanChampionship
+
+      is vidKeyYear (within 2010 2016) .
+        isEq vidKeyComp dumbarton $ vidKeyComp .= scottishChampionship
+
+      isEq vidKeyYear (Year 2017) .
+        isEq vidKeyComp cookstown $ vidKeyComp .= midUlsterChampionships
 
       -- Correct Year for Concerts
-      isImpact <- uses vidKeyComp (== impact)
-      when isImpact $ vidKeyYear .= Year 2016
+      isEq vidKeyComp impact $ vidKeyYear .= Year 2016
 
       pure ()
 
-correctComp :: Comp -> Year -> Comp
-correctComp origComp year
-  | within year 2012 2016 && origComp == forres = europeanChampionship
-  | within year 2010 2016 && origComp == dumbarton = scottishChampionship
-  | year == Year 2017 && origComp == cookstown = midUlsterChampionships
-  | otherwise = origComp
+isEq :: (Eq a, MonadState s m) => LensLike' (Const Bool) s a -> a -> m () -> m ()
+l `isEq` y =
+  l `is` (== y)
 
-within :: Year -> Int -> Int -> Bool
-within (Year y) a b = y >= a && y <= b
+is :: MonadState s m => LensLike' (Const Bool) s a -> (a -> Bool) -> m () -> m ()
+l `is` y =
+  \m ->
+  do v <- uses l y
+     when v m
+
+within :: Int -> Int -> Year -> Bool
+within  a b (Year y) = y >= a && y <= b
+
+-- type ChangeIf a = (a -> Bool, a -> a)
+
+-- runChanges :: [ChangeIf a] -> a -> a
+-- runChanges cs initial = foldl' (\a change -> runChangeIf change a) initial cs
+
+-- runChangeIf :: (t -> Bool, t -> t) -> t -> t
+-- runChangeIf (pp, changer) v = if pp v then changer v else v
