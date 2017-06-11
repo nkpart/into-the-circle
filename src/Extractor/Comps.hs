@@ -73,6 +73,7 @@ comp =
     , "perth" `is` perth
     , "cowal" `is` cowal
     , "markinch" `is` markinch
+    , "georgetown" `is` georgetown
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -99,6 +100,7 @@ ulsterChampionships = Comp "Ulster Championships"
 midUlsterChampionships = Comp "Mid Ulster Championships"
 
 -- Minors and others
+georgetown = Comp "Georgetown"
 markinch = Comp "Markinch Highland Games"
 newtownards = Comp "Newtownards"
 moira = Comp "Moira"
