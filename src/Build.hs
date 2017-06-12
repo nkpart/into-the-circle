@@ -80,7 +80,7 @@ main = do
 
   -- 1 per year
   for_ s $ \(yy@(Down (Year y')), rr) -> do
-    renderToFile (show y' <> ".html") (templateBase ( "Show recordings from " <> (pack . show $ y')) (Site [(yy, rr)]))
+    renderToFile (show y' <> ".html") (templateBase ( "Showing recordings from " <> (pack . show $ y')) (Site [(yy, rr)]))
 
   -- Per Band
   for_ bandsAndVids $ \(bb, vids) -> do

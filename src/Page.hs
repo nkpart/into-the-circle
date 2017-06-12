@@ -42,7 +42,7 @@ contentPage subTitle site@(Site s) = do
         div_ [class_ "white bg-navy pure-u-1"] $ do
           div_ [class_ "pure-u-1 centered"] $ do
             (h1_ [class_ "mega-biggen"] "Into the Circle")
-            p_ $ toHtml subTitle
+            p_ [class_ "embiggen"] $ toHtml subTitle
             h3_ [class_ "small-caps"] $
                 a_ [href_ "index.html", class_ "embiggen bold white"] "back to the index"
 
@@ -50,7 +50,8 @@ contentPage subTitle site@(Site s) = do
       div_ $ do
         div_ [class_ "sidebar navy"] $
           div_ [class_ "centered"] $ do
-            img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+            a_ [href_ "index.html"] $
+              img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
             div_ [class_ "pure-menu"] $ do
               F.for_ (compsByYear site) $ \(Year y, cs) -> do
                 ul_ [class_ "pure-menu-list"] $
@@ -85,6 +86,7 @@ indexPage qs allYears allBands = do
       div_ [class_ "title pure-g"] $ do
         div_ [class_ "white bg-navy pure-u-1"] $
          do div_ [class_ "pure-u-1 centered"] $ do
+              img_ [class_ "pt-2", width_ "120px", height_ "120px", src_ "circles-white.svg" ]
               (h1_ [class_ "mega-biggen"] "Into the Circle")
 
             div_ [class_ "pure-u-1 pure-g"] $ do
