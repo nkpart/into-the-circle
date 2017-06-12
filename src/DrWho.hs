@@ -1,10 +1,12 @@
 module DrWho where
 
+import           Control.Monad.IO.Class
+import           Control.Monad.Trans.State
 import           Data.Functor.Compose
-import qualified Data.Map.Strict      as M
-import           Data.Text            (Text)
+import qualified Data.Map.Strict           as M
+import           Data.Text                 (Text)
 import           Data.Time
-import           System.Directory     (doesFileExist)
+import           System.Directory          (doesFileExist)
 import           Types
 import           YouTube
 
@@ -13,12 +15,22 @@ cacheFile = "vids.dat"
 
 type Cache = M.Map Query (Stored [Video])
 
-cachedVideosForUser :: Text -> Query -> IO [Video]
+runWithCache :: StateT Cache IO a -> IO a
+runWithCache  action =
+  do cache <- loadCache cacheFile
+     (a,r) <- runStateT action cache
+     saveCache r cacheFile
+     pure a
+  -- load cache
+  -- saveCache
+
+cachedVideosForUser :: Text -> Query -> StateT Cache IO [Video]
 cachedVideosForUser apiKey q = do
-  cache <- loadCache cacheFile
-  now <- getCurrentTime
-  (vids, newCache) <- lookupOrRefresh now cache q (listVideosForUser apiKey q)
-  saveCache newCache cacheFile
+  cache <- get
+  now <- liftIO $ getCurrentTime
+  (vids, newCache) <- liftIO $ lookupOrRefresh now cache q (listVideosForUser apiKey q)
+  put newCache
+  --  saveCache newCache cacheFile
   pure vids
 
 loadCache :: FilePath -> IO Cache

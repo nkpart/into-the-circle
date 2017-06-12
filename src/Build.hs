@@ -10,21 +10,28 @@
 module Main where
 
 import           Control.Lens
-import           Data.Either        (partitionEithers)
-import           Data.List          (sort)
+import           Control.Monad.IO.Class
+import           Control.Monad.Trans.State
+import qualified Data.DList                as DL
+import           Data.Either               (partitionEithers)
+import           Data.Foldable             (fold, for_)
+import           Extractor.Bands
+-- import           Data.List                 (sort)
+import qualified Data.Map.Strict           as M
 import           Data.Monoid
 import           Data.Ord
-import           Data.Text          (Text, intercalate, pack)
-import qualified Data.Text.IO       as T
+import           Data.Text                 (Text, intercalate, pack, unpack)
+import qualified Data.Text.IO              as T
 import           DrWho
 import           Extractor
-import           Lucid
+import           Lucid                     hiding (for_)
 import           Page
-import           Prelude            (Eq, FilePath, Foldable, IO, Show, filter,
-                                     fmap, foldMap, length, print, pure, show,
-                                     ($), (.), (<$>), (<$>), (==))
-import           System.Environment (getEnv)
-import           System.Process     (callCommand)
+-- import           Prelude                   (Eq, FilePath, Foldable, IO, Show,
+--                                             filter, fmap, foldMap, fst, length,
+--                                             print, pure, show, ($), (.), (<$>),
+--                                             (<$>), (==))
+import           System.Environment        (getEnv)
+import           System.Process            (callCommand)
 import           Types
 
 usersOfInterest :: [Query]
@@ -47,21 +54,46 @@ usersOfInterest =
   , Username "piperbob2"
   , Username "weekendsinontario"
   , Username "quickmarch"
+  , Username "PipesDrumsMagazine"
   ]
 
 main :: IO ()
 main = do
   apiKey <- pack <$> getEnv "YOUTUBE_API_KEY"
-  (missing, built) <- foldMap (runUser apiKey) usersOfInterest
+  (missing, built) <- fold <$> runWithCache (traverse (runUser apiKey) usersOfInterest)
 
   print (length missing)
   print (length built)
 
-  T.writeFile "missed.csv" . foldMap ((<> "\n") . intercalate "," . dispError) $ missing
-  renderToFile "index.html" (template usersOfInterest $ buildSite built)
-  let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) built
-  renderToFile "drummers.html" (template usersOfInterest $ buildSite justDrumming)
-  renderToCsv "index.csv" (sort built)
+  let Site s = buildSite JustDoIt built
+      years = s ^.. traverse . _1 . _Down
+      bandsAndVids = (fmap.fmap) DL.toList . M.toList . M.fromListWith mappend . fmap (\v -> (_vidKeyBand v, DL.singleton v)) $ DL.toList built
+      bands = fmap fst bandsAndVids
+      templateBase = contentPage
+
+  -- Statistics
+  -- T.writeFile "missed.csv" . foldMap ((<> "\n") . intercalate "," . dispError) $ missing
+  -- renderToCsv "index.csv" (sort $ DL.toList built)
+
+  -- Index
+  renderToFile "index.html" (indexPage usersOfInterest years bands)
+
+  -- 1 per year
+  for_ s $ \(yy@(Down (Year y')), rr) -> do
+    renderToFile (show y' <> ".html") (templateBase ( "Show recordings from " <> (pack . show $ y')) (Site [(yy, rr)]))
+
+  -- Per Band
+  for_ bandsAndVids $ \(bb, vids) -> do
+    let subtitle = case bb of
+                      OtherBand -> "Showing recordings of other bands."
+                      _ | bb == soloist -> "Showing recordings of soloists."
+                        | otherwise        -> "Showing recordings of " <> longBand bb
+    renderToFile (unpack (shortBand bb) <> ".html") (templateBase subtitle (buildSite CollectBands vids))
+
+  -- Just the drumming
+  let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) $ DL.toList built
+  renderToFile "drummers.html" (templateBase "Drummers" $ buildSite JustDoIt justDrumming)
+
   callCommand "open -g index.html"
 
 renderToCsv :: Foldable t => FilePath -> t VidKey -> IO ()
@@ -74,11 +106,14 @@ dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =
     [pack (show (_videoSource vu)), _videoTitle vu, reason, videoUrl vu]
 
-runUser :: Text -> Query -> IO ([Uncategorised], [VidKey])
+-- runUser :: Text -> Query -> IO ([Uncategorised], [VidKey])
+runUser :: Text -> Query -> StateT Cache IO (DL.DList Uncategorised, DL.DList VidKey)
 runUser apiKey u = do
+  liftIO $ print ("running-start" :: Text, u)
   us <- cachedVideosForUser apiKey u
+  liftIO $ print ("running-end" :: Text, u)
   let process vu = (_Left %~ Uncategorised vu) . extractKey $ vu
-  pure . partitionEithers . fmap process $ us
+  pure . over _2 DL.fromList . over _1 DL.fromList . partitionEithers . fmap process $ us
 
 data Uncategorised =
   Uncategorised Video Text

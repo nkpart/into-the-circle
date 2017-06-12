@@ -1,0 +1,48 @@
+
+.jobby { display: none; }
+
+li {
+    list-style: none;
+}
+
+ul { padding: 0em }
+
+@media (min-width: 48em) {
+    ul { padding-left: 1em; }
+    .align-right { text-align: right; }
+    .jobby { display: inline-flex; }
+
+    .squish-big-left {
+        padding-left: 30%;
+    }
+
+    .squish-big-right {
+        padding-right: 30%;
+    }
+}
+
+.content a {
+    text-decoration: none;
+    color: #0074D9; /* acqua */
+}
+
+.content a:visited {
+    color: #0074D9;
+        /* blue */
+}
+
+.content a:hover {
+    text-decoration: underline;
+}
+
+
+@media (min-width: 48em) {
+    .content {
+        /*margin-left: 200px;*/
+    }
+
+    .title { 
+        /*padding-left: 200px; */
+    }
+
+}

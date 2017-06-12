@@ -52,7 +52,7 @@ yearOf utcTime =
 
 year :: Alternative f => [Text] -> f Year
 year (h:_)
-  | all isDigit h && length h == 4 && (read (unpack h) :: Int) > 1970 = pure (Year (read (unpack h)))
+  | all isDigit h && length h == 4 && (let x = (read (unpack h) :: Int)  in  x > 1970 && x < 2040) = pure (Year (read (unpack h)))
 year _ = empty
 
 set :: Alternative f => [Text] -> f Set
