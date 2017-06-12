@@ -15,8 +15,7 @@ import           Control.Monad.Trans.State
 import qualified Data.DList                as DL
 import           Data.Either               (partitionEithers)
 import           Data.Foldable             (fold, for_)
-import           Extractor.Bands
--- import           Data.List                 (sort)
+import           Data.List                 (sort)
 import qualified Data.Map.Strict           as M
 import           Data.Monoid
 import           Data.Ord
@@ -24,6 +23,7 @@ import           Data.Text                 (Text, intercalate, pack, unpack)
 import qualified Data.Text.IO              as T
 import           DrWho
 import           Extractor
+import           Extractor.Bands
 import           Lucid                     hiding (for_)
 import           Page
 -- import           Prelude                   (Eq, FilePath, Foldable, IO, Show,
@@ -72,15 +72,15 @@ main = do
       templateBase = contentPage
 
   -- Statistics
-  -- T.writeFile "missed.csv" . foldMap ((<> "\n") . intercalate "," . dispError) $ missing
-  -- renderToCsv "index.csv" (sort $ DL.toList built)
+  T.writeFile "missed.csv" . foldMap ((<> "\n") . intercalate "," . dispError) $ missing
+  renderToCsv "index.csv" (sort $ DL.toList built)
 
   -- Index
-  renderToFile "index.html" (indexPage usersOfInterest years bands)
+  renderToFile "docs/index.html" (indexPage usersOfInterest years bands)
 
   -- 1 per year
   for_ s $ \(yy@(Down (Year y')), rr) -> do
-    renderToFile (show y' <> ".html") (templateBase ( "Showing recordings from " <> (pack . show $ y')) (Site [(yy, rr)]))
+    renderToFile ("docs/" <> show y' <> ".html") (templateBase ( "Showing recordings from " <> (pack . show $ y')) (Site [(yy, rr)]))
 
   -- Per Band
   for_ bandsAndVids $ \(bb, vids) -> do
@@ -88,13 +88,13 @@ main = do
                       OtherBand -> "Showing recordings of other bands."
                       _ | bb == soloist -> "Showing recordings of soloists."
                         | otherwise        -> "Showing recordings of " <> longBand bb
-    renderToFile (unpack (shortBand bb) <> ".html") (templateBase subtitle (buildSite CollectBands vids))
+    renderToFile ("docs/" <> unpack (shortBand bb) <> ".html") (templateBase subtitle (buildSite CollectBands vids))
 
   -- Just the drumming
   let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) $ DL.toList built
-  renderToFile "drummers.html" (templateBase "Drummers" $ buildSite JustDoIt justDrumming)
+  renderToFile "docs/drummers.html" (templateBase "Drummers" $ buildSite JustDoIt justDrumming)
 
-  callCommand "open -g index.html"
+  callCommand "open -g docs/index.html"
 
 renderToCsv :: Foldable t => FilePath -> t VidKey -> IO ()
 renderToCsv fp vids =
