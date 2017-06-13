@@ -81,6 +81,7 @@ comp =
     , "winterstorm" `is` winterstorm
     , "winter storm" `is` winterstorm
     , "inveraray ascension" `is` ascensionConcert
+    , "ascension concert" `is` ascensionConcert
     , "impact" `is` impact
     , "todds bar recital" `is` toddsBarRecital
     ]

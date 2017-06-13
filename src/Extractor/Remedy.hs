@@ -25,6 +25,7 @@ remedy a = execState m a
 
       -- Correct Year for Concerts
       isEq vidKeyComp impact $ vidKeyYear .= Year 2016
+      isEq vidKeyComp ascensionConcert $ vidKeyYear .= Year 2013
 
       pure ()
 
