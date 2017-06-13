@@ -39,8 +39,8 @@ band =
     , "fm medley" `is` fmm
     , "fife constabulary" `is` fifeConstabulary
     , "glasgow police" `is` glasgowPolice
-    , "inveraray" `is` inverary
-    , "inverary" `is` inverary
+    , "inveraray" `is` inveraray
+    , "inverary" `is` inveraray
     , "la scots" `is` laScots
     , "lothian and borders police pipe band" `is` lothianAndBorders
     , "manawatu" `is` manawatu
@@ -87,8 +87,8 @@ cullybackey = Band "Cullybackey Pipe Band"
 dowco = Band "Dowco Triumph Street Pipe Band"
 fifeConstabulary = Band "Fife Constabulary Pipe Band"
 fmm = Band "Field Marshal Montgomery"
-glasgowPolice = Band "Glasgow Police"
-inverary = Band "Inverary Pipe Band"
+glasgowPolice = Band "Glasgow Police Pipe Band"
+inveraray = Band "Inveraray & District Pipe Band"
 laScots = Band "LA Scots Pipe Band"
 lothianAndBorders = Band "Lothian and Borders Police Pipe Band"
 manawatu = Band "Manawatu Scottish Pipe Band"

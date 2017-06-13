@@ -68,9 +68,11 @@ data Query
   | ChannelId Text Text
   deriving (Eq, Ord, Read, Show)
 
+newtype VideoId = VideoId { unVideoId :: Text }
+  deriving (Eq, Show, Read, Ord)
 
 data VideoA a = Video
-  { _videoId          :: !Text
+  { _videoId          :: !VideoId
   , _videoTitle       :: !Text
   , _videoDescription :: !Text
   , _videoPublishedAt :: !UTCTime
@@ -149,7 +151,7 @@ toWords :: Text -> Words
 toWords = Words . Data.List.filter (not . (== empty)) . fmap (T.filter (\c -> isAlphaNum c || isDigit c)) . words . toLower
 
 videoUrl :: Video -> Text
-videoUrl vid = "https://www.youtube.com/watch?v="<> _videoId vid
+videoUrl vid = "https://www.youtube.com/watch?v="<> (unVideoId . _videoId $ vid)
 
 
 vidKeyYear :: Simple Lens VidKey Year

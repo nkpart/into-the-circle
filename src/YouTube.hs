@@ -40,7 +40,7 @@ instance FromJSON UnsourcedVideo where
     withObject "Video" $ \o -> do
       snippet <- o .: "snippet"
       contentDetails <- o .: "contentDetails"
-      Video <$> (contentDetails .: "videoId") <*> (snippet .: "title") <*>
+      Video <$> (VideoId <$> contentDetails .: "videoId") <*> (snippet .: "title") <*>
         (snippet .: "description") <*>
         (snippet .: "publishedAt") <*> pure ()
 

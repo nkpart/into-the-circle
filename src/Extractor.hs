@@ -33,12 +33,6 @@ extractKey video =
             corp' = co <.> FullBand
         pure $ remedy (VidKey (Down year') comp' band' corp' set' video)
 
-testTitle :: Text -> IO ()
-testTitle title =
-      do t <- getCurrentTime
-         let video = Video "ID" title "" t (Username "Testing")
-         print (extractKey video)
-
 mergeErrors :: Either Text t1 -> Either Text t -> Either Text (t1, t)
 mergeErrors (Right a) (Right b) = Right (a,b)
 mergeErrors (Right _) (Left e)  = Left e
