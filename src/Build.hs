@@ -56,6 +56,8 @@ usersOfInterest =
   , Username "quickmarch"
   , Username "PipesDrumsMagazine"
   , ChannelId "UCZIF5RXWGD_3v5BU3N_KHRg" "RSPBA HQ"
+  , Username "womersleyandrew"
+  , Username "tyfry123"
   ]
 
 main :: IO ()

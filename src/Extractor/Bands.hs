@@ -67,11 +67,13 @@ band =
     , "strathclyde police pipe band" `is` strathclyde
     , "toronto police" `is` toronto
     , "vale of atholl" `is` theVale
+    , "victoria police pipe band" `is` vppb
     --- Really want to match this last I think
     , "solos" `is` soloist
     , "solo" `is` soloist
     , "todds bar recital" `is` soloist
     , "pipe band" `isLow` otherBand
+
     ]
 
 soloist = Band "Soloists"
@@ -105,5 +107,5 @@ sppb = Band "Scottish Power Pipe Band"
 strathclyde = Band "Strathclyde Police Pipe Band"
 theVale = Band "The Vale of Atholl Pipe Band"
 toronto = Band "Toronto Police Pipe Band"
-
+vppb = Band "Victoria Police Pipe Band"
 otherBand = OtherBand
