@@ -1,0 +1,1 @@
+ghcid -c "stack ghci tunes-index:lib :test" -T main
