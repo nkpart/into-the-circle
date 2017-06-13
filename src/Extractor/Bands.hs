@@ -36,6 +36,7 @@ band =
     , "dowco triumph street" `is` dowco
     , "field marshal montgomery" `is` fmm
     , "field marshall montgomery" `is` fmm
+    , "fm medley" `is` fmm
     , "fife constabulary" `is` fifeConstabulary
     , "glasgow police" `is` glasgowPolice
     , "inveraray" `is` inverary
