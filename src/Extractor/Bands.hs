@@ -64,6 +64,7 @@ band =
     , "spirit of scotland" `is` sos
     , "st laurence otoole" `is` slot
     , "st lawrence otoole" `is` slot
+    , "slot" `is` slot
     , "strathclyde police pipe band" `is` strathclyde
     , "toronto police" `is` toronto
     , "vale of atholl" `is` theVale
