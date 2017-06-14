@@ -58,6 +58,7 @@ usersOfInterest =
   , ChannelId "UCZIF5RXWGD_3v5BU3N_KHRg" "RSPBA HQ"
   , Username "womersleyandrew"
   , Username "tyfry123"
+  , ChannelId "UC9772NGfrz4XrDN8e9wO1HQ" "StudioStabilo"
   ]
 
 main :: IO ()
