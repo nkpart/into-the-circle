@@ -59,6 +59,7 @@ usersOfInterest =
   , Username "womersleyandrew"
   , Username "tyfry123"
   , ChannelId "UC9772NGfrz4XrDN8e9wO1HQ" "StudioStabilo"
+  , Username "zippyzipster"
   ]
 
 main :: IO ()
