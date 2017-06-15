@@ -20,8 +20,8 @@ import qualified Data.Text       as T (filter)
 import           Data.Time
 import           Prelude         (Eq, Foldable, Int, Maybe (..), Ord, Read,
                                   Show, const, div, flip, fmap, fromIntegral,
-                                  fst, length, not, pure, snd, ($), (+), (.),
-                                  (==), (||))
+                                  fst, id, length, maybe, not, pure, snd, ($),
+                                  (+), (.), (==), (||))
 -- Our site is an index
 
 newtype Site a = Site ([(Down Year, [((Comp, UTCTime), [(Maybe Band, [(Corp, [(Set, a)])])])])])
@@ -64,9 +64,17 @@ data Corp
 ---
 
 data Query
-  = Username Text
+  = Username Text (Maybe Text)
   | ChannelId Text Text
   deriving (Eq, Ord, Read, Show)
+
+queryView :: Query -> Text
+queryView (Username user alias) = maybe user id alias
+queryView (ChannelId _ alias)   = alias
+
+queryUri :: Query -> Text
+queryUri (Username u _)  = "https://youtube.com/user/" <> u
+queryUri (ChannelId c _) = "https://youtube.com/channel/" <> c
 
 newtype VideoId = VideoId { unVideoId :: Text }
   deriving (Eq, Show, Read, Ord)

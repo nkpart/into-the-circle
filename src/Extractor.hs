@@ -14,9 +14,9 @@ import           Data.Time
 import           Extractor.Bands
 import           Extractor.Comps
 import           Extractor.Remedy
-import           Prelude             (Either (..), Int, Maybe (..), print, pure,
-                                      read, (&&), (==), (>))
-import           Prelude             (IO, fromInteger, ($), (.), (<$>), (<*>))
+import           Prelude             (Either (..), Int, Maybe (..), pure, read,
+                                      (&&), (==), (>))
+import           Prelude             (fromInteger, ($), (.), (<$>), (<*>))
 import           Types
 
 extractKey :: Video -> Either Text VidKey

@@ -54,7 +54,7 @@ getChannelUploadsId apiKey forUsername = do
         [apiKey]
       pp =
         case forUsername of
-          Username u    -> param "forUsername" .~ [u]
+          Username u _  -> param "forUsername" .~ [u]
           ChannelId c _ -> param "id" .~ [c]
   r <- Wreq.getWith opts "https://www.googleapis.com/youtube/v3/channels"
   pure $ r ^? Wreq.responseBody . key "items" . nth 0 . key "contentDetails" .

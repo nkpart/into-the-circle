@@ -119,8 +119,7 @@ indexPage qs allYears allBands = do
 details :: [Query] -> Html ()
 details qs =
   let r :: Int -> Query -> Html ()
-      r i (Username u) = middy i <> a_ [class_ "bold white", href_ $ "https://youtube.com/user/" <> u] (toHtml u)
-      r i (ChannelId c d) = middy i <> a_ [class_ "bold white", href_ $ "https://youtube.com/channel/" <> c] (toHtml d)
+      r i q = middy i <> a_ [class_ "bold white", href_ $ queryUri q] (toHtml (queryView q))
       middy i | i == 0 = mempty
               | i == numQs - 1 = " and "
               | otherwise = ", "
@@ -176,8 +175,7 @@ renderSet c (s, v) =
 renderVid :: Set -> Corp -> Video -> Html ()
 renderVid s c vid = li_ [] $ prefix <> (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid)) <> " [" <> showSource (_videoSource vid) <>  "]"
   where
-        showSource (Username u)       = toHtml u
-        showSource (ChannelId _ desc) = toHtml desc
+        showSource = toHtml . queryView
         prefix :: Html ()
         prefix = (case s of
                     MSR     -> "MSR "

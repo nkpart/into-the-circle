@@ -34,32 +34,38 @@ import           System.Environment        (getEnv)
 import           System.Process            (callCommand)
 import           Types
 
+username :: Text -> Query
+username u = Username u Nothing
+
+aliasedUser :: Text -> Text -> Query
+aliasedUser a b = Username a (Just b)
+
 usersOfInterest :: [Query]
 usersOfInterest =
-  [ Username "dronechorus"
-  , Username "MrUlsterscot"
-  , Username "CrazyRed177"
+  [ username "dronechorus"
+  , username "MrUlsterscot"
+  , username "CrazyRed177"
   , ChannelId "UCWUlycWU75Txr4yL7s0GWBw" "Craig Rogers"
-  , Username "drumsdotcom"
-  , Username "jwramsay16"
-  , Username "celticmaps"
-  , Username "imBOSS0224"
+  , username "drumsdotcom"
+  , username "jwramsay16"
+  , username "celticmaps"
+  , username "imBOSS0224"
   , ChannelId "UCZZS-Dh02rBU_PkJx7SZHWA" "ClanMacRae"
-  , Username "rennieaj"
-  , Username "LCK217"
-  , Username "ThereIsOnlyOneStuart"
-  , Username "allynv"
-  , Username "samramsaydrummer"
-  , Username "pipebandfollower"
-  , Username "piperbob2"
-  , Username "weekendsinontario"
-  , Username "quickmarch"
-  , Username "PipesDrumsMagazine"
+  , username "rennieaj"
+  , username "LCK217"
+  , username "ThereIsOnlyOneStuart"
+  , username "allynv"
+  , username "samramsaydrummer"
+  , username "pipebandfollower"
+  , username "piperbob2"
+  , username "weekendsinontario"
+  , username "quickmarch"
+  , username "PipesDrumsMagazine"
   , ChannelId "UCZIF5RXWGD_3v5BU3N_KHRg" "RSPBA HQ"
-  , Username "womersleyandrew"
-  , Username "tyfry123"
+  , username "womersleyandrew"
+  , username "tyfry123"
   , ChannelId "UC9772NGfrz4XrDN8e9wO1HQ" "StudioStabilo"
-  , Username "zippyzipster"
+  , aliasedUser "zippyzipster" "We Love Pipe Bands/ Loud Pipes Visual Media"
   ]
 
 main :: IO ()
