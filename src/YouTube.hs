@@ -9,25 +9,22 @@ import           Data.Aeson
 import           Data.Aeson.Lens
 import           Data.Foldable          (traverse_)
 import           Data.Text              (Text)
+import           Debug.Trace
 import           Network.Wreq           (param)
 import qualified Network.Wreq           as Wreq
 import qualified Pipes
 import qualified Pipes.Prelude          as Pipes
 import           Types
 
-
-listVideosForUser :: Text -> Query -> IO [Video]
+listVideosForUser :: YoutubeApiKey -> Query -> IO [Video]
 listVideosForUser apiKey user = do
   Just thing <- getChannelUploadsId apiKey user
   let xs = Pipes.for (readAllPages apiKey thing Nothing) (traverse_ Pipes.yield)
-  fmap (fmap (setSource user)) (Pipes.toListM xs)
-
-setSource :: a1 -> VideoA a -> VideoA a1
-setSource q v = v { _videoSource = q }
+  Pipes.toListM xs
 
 readAllPages
   :: Pipes.MonadIO m
-  => Text -> Text -> Maybe Text -> Pipes.Producer [UnsourcedVideo] m ()
+  => YoutubeApiKey -> Text -> Maybe Text -> Pipes.Producer [Video] m ()
 readAllPages apiKey playlist pageToken = do
   do (token, items) <- liftIO (getChannelUploads apiKey playlist pageToken)
      Pipes.yield items
@@ -35,20 +32,20 @@ readAllPages apiKey playlist pageToken = do
        Just v  -> readAllPages apiKey playlist (Just v)
        Nothing -> pure ()
 
-instance FromJSON UnsourcedVideo where
+instance FromJSON Video where
   parseJSON =
-    withObject "Video" $ \o -> do
+    withObject "Video" $ \o -> traceShow o $ do
       snippet <- o .: "snippet"
       contentDetails <- o .: "contentDetails"
       Video <$> (VideoId <$> contentDetails .: "videoId") <*> (snippet .: "title") <*>
         (snippet .: "description") <*>
-        (snippet .: "publishedAt") <*> pure ()
+        (snippet .: "publishedAt") <*> (Channel <$> snippet .: "channelTitle")
 
-instance ToJSON UnsourcedVideo where
+instance ToJSON Video where
   toJSON = undefined
 
-getChannelUploadsId :: Text -> Query -> IO (Maybe Text)
-getChannelUploadsId apiKey forUsername = do
+getChannelUploadsId :: YoutubeApiKey -> Query -> IO (Maybe Text)
+getChannelUploadsId (YoutubeApiKey apiKey) forUsername = do
   let opts =
         Wreq.defaults & param "part" .~ ["contentDetails"] & pp & param "key" .~
         [apiKey]
@@ -62,8 +59,8 @@ getChannelUploadsId apiKey forUsername = do
     key "uploads" .
     _String
 
-getChannelUploads :: Text -> Text -> Maybe Text -> IO (Maybe Text, [UnsourcedVideo])
-getChannelUploads apiKey playlistId pageToken = do
+getChannelUploads :: YoutubeApiKey -> Text -> Maybe Text -> IO (Maybe Text, [Video])
+getChannelUploads (YoutubeApiKey apiKey) playlistId pageToken = do
   let opts =
         Wreq.defaults & param "part" .~ ["snippet,contentDetails"] &
         param "maxResults" .~

@@ -173,9 +173,9 @@ renderSet c (s, v) =
   foldMap (renderVid s c) v
 
 renderVid :: Set -> Corp -> Video -> Html ()
-renderVid s c vid = li_ [] $ prefix <> (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid)) <> " [" <> showSource (_videoSource vid) <>  "]"
+renderVid s c vid = li_ [] $ prefix <> (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid)) <> " [" <> showSource (view videoChannel vid) <>  "]"
   where
-        showSource = toHtml . queryView
+        showSource = toHtml . unChannel
         prefix :: Html ()
         prefix = (case s of
                     MSR     -> "MSR "

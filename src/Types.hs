@@ -76,20 +76,22 @@ queryUri :: Query -> Text
 queryUri (Username u _)  = "https://youtube.com/user/" <> u
 queryUri (ChannelId c _) = "https://youtube.com/channel/" <> c
 
+newtype YoutubeApiKey = YoutubeApiKey Text
+  deriving (Eq, Show)
+
 newtype VideoId = VideoId { unVideoId :: Text }
   deriving (Eq, Show, Read, Ord)
 
-data VideoA a = Video
+newtype Channel = Channel { unChannel :: Text }
+  deriving (Eq, Show, Read, Ord)
+
+data Video = Video
   { _videoId          :: !VideoId
   , _videoTitle       :: !Text
   , _videoDescription :: !Text
   , _videoPublishedAt :: !UTCTime
-  , _videoSource      :: !a
+  , _videoChannel     :: !Channel
   } deriving (Eq, Show, Read, Ord)
-
-type UnsourcedVideo = VideoA ()
-
-type Video = VideoA Query
 
 newtype Words =
   Words [Text]
@@ -107,7 +109,7 @@ data VidKey = VidKey
   } deriving (Eq, Show, Ord)
 
 makeLenses ''VidKey
-makeLenses ''VideoA
+makeLenses ''Video
 
 _Down :: Simple Iso (Down a) a
 _Down = iso (\(Down a) -> a) Down

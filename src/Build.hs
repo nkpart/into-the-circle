@@ -66,11 +66,12 @@ usersOfInterest =
   , username "tyfry123"
   , ChannelId "UC9772NGfrz4XrDN8e9wO1HQ" "StudioStabilo"
   , aliasedUser "zippyzipster" "We Love Pipe Bands/ Loud Pipes Visual Media"
+  , username "TheMillarballs"
   ]
 
 main :: IO ()
 main = do
-  apiKey <- pack <$> getEnv "YOUTUBE_API_KEY"
+  apiKey <- YoutubeApiKey . pack <$> getEnv "YOUTUBE_API_KEY"
   (missing, built) <- fold <$> runWithCache (traverse (runUser apiKey) usersOfInterest)
 
   print (length missing)
@@ -110,15 +111,15 @@ main = do
 renderToCsv :: Foldable t => FilePath -> t VidKey -> IO ()
 renderToCsv fp vids =
   let ps = pack . show
-      row (VidKey (Down (Year y)) (Comp c) b co s vid) = [ps y, c, ps b, ps s, ps co, ps $ _videoTitle vid, ps $ _videoSource vid]
+      row (VidKey (Down (Year y)) (Comp c) b co s vid) = [ps y, c, ps b, ps s, ps co, ps $ _videoTitle vid, unChannel $ _videoChannel vid]
   in T.writeFile fp . foldMap ((<> "\n") . intercalate "," . row) $ vids
 
 dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =
-    [pack (show (_videoSource vu)), _videoTitle vu, reason, videoUrl vu]
+    [(unChannel $ _videoChannel vu), _videoTitle vu, reason, videoUrl vu]
 
 -- runUser :: Text -> Query -> IO ([Uncategorised], [VidKey])
-runUser :: Text -> Query -> StateT Cache IO (DL.DList Uncategorised, DL.DList VidKey)
+runUser :: YoutubeApiKey -> Query -> StateT Cache IO (DL.DList Uncategorised, DL.DList VidKey)
 runUser apiKey u = do
   liftIO $ print ("running-start" :: Text, u)
   us <- cachedVideosForUser apiKey u
