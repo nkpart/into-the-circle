@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+
 module YouTube where
 
 import           Control.Lens
@@ -9,7 +10,6 @@ import           Data.Aeson
 import           Data.Aeson.Lens
 import           Data.Foldable          (traverse_)
 import           Data.Text              (Text)
-import           Debug.Trace
 import           Network.Wreq           (param)
 import qualified Network.Wreq           as Wreq
 import qualified Pipes
@@ -28,18 +28,20 @@ readAllPages
 readAllPages apiKey playlist pageToken = do
   do (token, items) <- liftIO (getChannelUploads apiKey playlist pageToken)
      Pipes.yield items
-     case token of
+     case token ofn
        Just v  -> readAllPages apiKey playlist (Just v)
        Nothing -> pure ()
 
 instance FromJSON Video where
   parseJSON =
-    withObject "Video" $ \o -> traceShow o $ do
-      snippet <- o .: "snippet"
-      contentDetails <- o .: "contentDetails"
-      Video <$> (VideoId <$> contentDetails .: "videoId") <*> (snippet .: "title") <*>
-        (snippet .: "description") <*>
-        (snippet .: "publishedAt") <*> (Channel <$> snippet .: "channelTitle")
+    withObject "Video" $ \o -> do
+        snippet <- o .: "snippet"
+        contentDetails <- o .: "contentDetails"
+        Video <$> (VideoId <$> contentDetails .: "videoId") <*>
+          (snippet .: "title") <*>
+          (snippet .: "description") <*>
+          (snippet .: "publishedAt") <*>
+          (Channel <$> snippet .: "channelTitle")
 
 instance ToJSON Video where
   toJSON = undefined
@@ -59,7 +61,10 @@ getChannelUploadsId (YoutubeApiKey apiKey) forUsername = do
     key "uploads" .
     _String
 
-getChannelUploads :: YoutubeApiKey -> Text -> Maybe Text -> IO (Maybe Text, [Video])
+getChannelUploads :: YoutubeApiKey
+                  -> Text
+                  -> Maybe Text
+                  -> IO (Maybe Text, [Video])
 getChannelUploads (YoutubeApiKey apiKey) playlistId pageToken = do
   let opts =
         Wreq.defaults & param "part" .~ ["snippet,contentDetails"] &
