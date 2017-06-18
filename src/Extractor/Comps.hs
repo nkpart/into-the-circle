@@ -59,6 +59,8 @@ comp =
     , "world pipe band championships" `is` worlds
     , "world pipe band champiosnhips" `is` worlds
     , "world drum corp champions" `is` worlds
+    , "world pipe band championship" `is` worlds
+    , "wWorld pipeband" `is` worlds
     , "worlds" `is` worlds
     , "glasgow green" `is` worlds
     , "live back in ireland" `is` liveBackInIreland
@@ -76,6 +78,7 @@ comp =
     , "georgetown" `is` georgetown
     , "lurgan" `is` lurgan
     , "lurga" `is` lurgan
+    , "lochore" `is` lochore
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -131,6 +134,7 @@ rostrevor = Comp "Rostrevor"
 vit = Comp "Virginia International Tattoo"
 cookstown = Comp "Cookstown"
 lurgan = Comp "Lurgan"
+lochore = Comp "Lochore"
 
 -- Solo comps
 ulsterSolos = Comp "Ulster Solos"
