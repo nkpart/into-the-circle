@@ -80,6 +80,7 @@ comp =
     , "lurga" `is` lurgan
     , "lochore" `is` lochore
     , "fermanagh" `is` enniskillen
+    , "lisburn" `is` lisburn
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -136,6 +137,7 @@ vit = Comp "Virginia International Tattoo"
 cookstown = Comp "Cookstown"
 lurgan = Comp "Lurgan"
 lochore = Comp "Lochore"
+lisburn = Comp "Lisburn" -- this is hled in Moira, so maybe Moira are actually Lisburn? But there might be multiple comps.
 
 -- Solo comps
 ulsterSolos = Comp "Ulster Solos"
