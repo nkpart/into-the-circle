@@ -28,6 +28,7 @@ band =
     , "bleary & district" `is` blearyAndDistrict
     , "bleary district" `is` blearyAndDistrict -- todo dont drop ampersands
     , "bleary and district" `is` blearyAndDistrict
+    , "blearly and district" `is` blearyAndDistrict
     , "blearly and distrct" `is` blearyAndDistrict
     , "boghall and bathgate" `is` boghall
     , "boghall bathgate" `is` boghall
