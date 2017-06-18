@@ -25,11 +25,13 @@ band =
     [ "78th fraser highlanders" `is` _78thsFraserHighlanders
     , "78th highlanders halifax" `is` _78thHalifax
     , "auckland district" `is` auckland
-    , "bleary & district" `is` blearyAndDistrict
-    , "bleary district" `is` blearyAndDistrict -- todo dont drop ampersands
-    , "bleary and district" `is` blearyAndDistrict
-    , "blearly and district" `is` blearyAndDistrict
-    , "blearly and distrct" `is` blearyAndDistrict
+    -- , "bleary & district" `is` blearyAndDistrict
+    --, "bleary district" `is` blearyAndDistrict -- todo dont drop ampersands
+    -- , "bleary and district" `is` blearyAndDistrict
+    -- , "blearly and district" `is` blearyAndDistrict
+    -- , "blearly and distrct" `is` blearyAndDistrict
+    , "bleary" `is` blearyAndDistrict
+    , "blearly" `is` blearyAndDistrict
     , "boghall and bathgate" `is` boghall
     , "boghall bathgate" `is` boghall
     , "canterbury caledonian" `is` canterbury
