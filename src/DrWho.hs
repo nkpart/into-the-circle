@@ -16,12 +16,10 @@ type Cache = M.Map Query (Stored [Video])
 
 runWithCache :: StateT Cache IO a -> IO a
 runWithCache  action =
-  do let cache = M.empty -- <- loadCache cacheFile
+  do cache <- loadCache cacheFile
      (a,r) <- runStateT action cache
      saveCache r cacheFile
      pure a
-  -- load cache
-  -- saveCache
 
 cachedVideosForUser :: YoutubeApiKey -> Query -> StateT Cache IO [Video]
 cachedVideosForUser apiKey q = do

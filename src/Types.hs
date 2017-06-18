@@ -85,13 +85,22 @@ newtype VideoId = VideoId { unVideoId :: Text }
 newtype Channel = Channel { unChannel :: Text }
   deriving (Eq, Show, Read, Ord)
 
-data Video = Video
+data Video' a = Video
   { _videoId          :: !VideoId
   , _videoTitle       :: !Text
   , _videoDescription :: !Text
   , _videoPublishedAt :: !UTCTime
   , _videoChannel     :: !Channel
+  , _videoExt         :: a
   } deriving (Eq, Show, Read, Ord)
+
+type Video = Video' Deets
+type VideoU = Video' ()
+
+data Deets = Deets
+ { _deetsDuration :: Text, _deetsViews :: Text }
+ deriving (Eq, Show, Read, Ord)
+
 
 newtype Words =
   Words [Text]
@@ -109,7 +118,7 @@ data VidKey = VidKey
   } deriving (Eq, Show, Ord)
 
 makeLenses ''VidKey
-makeLenses ''Video
+makeLenses ''Video'
 
 _Down :: Simple Iso (Down a) a
 _Down = iso (\(Down a) -> a) Down

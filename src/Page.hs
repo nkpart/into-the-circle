@@ -7,12 +7,13 @@
 module Page where
 
 import           Control.Lens
-import qualified Data.Foldable as F (for_)
-import           Data.Monoid   ((<>))
-import           Data.Ord      (Down (..))
-import           Data.Sequence (Seq)
-import qualified Data.Text     as T (Text, intercalate, pack, words)
+import qualified Data.Foldable   as F (for_)
+import           Data.Monoid     ((<>))
+import           Data.Ord        (Down (..))
+import           Data.Sequence   (Seq)
+import qualified Data.Text       as T (Text, intercalate, pack, words)
 import           Data.Time
+import           ISO8601Duration
 import           Lucid
 import           Types
 
@@ -173,7 +174,20 @@ renderSet c (s, v) =
   foldMap (renderVid s c) v
 
 renderVid :: Set -> Corp -> Video -> Html ()
-renderVid s c vid = li_ [] $ prefix <> (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid)) <> " [" <> showSource (view videoChannel vid) <>  "]"
+renderVid s c vid =
+  let deets = _videoExt vid
+  in
+   li_ [class_ "pb-03"] $ do
+                             div_ $ prefix
+                              <>
+                              (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid))
+
+                             div_ [class_ "smaller-text gray"] $ do
+                               toHtml (durationString (_deetsDuration deets))
+                               " - "
+                               toHtml (_deetsViews deets <> " views")
+                               " - "
+                               showSource (view videoChannel vid)
   where
         showSource = toHtml . unChannel
         prefix :: Html ()

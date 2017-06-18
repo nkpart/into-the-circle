@@ -21,6 +21,7 @@ library
     Page
     Types
     YouTube
+    ISO8601Duration
 
   build-depends:
         base >= 3 && < 5

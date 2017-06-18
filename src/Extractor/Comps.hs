@@ -74,6 +74,8 @@ comp =
     , "cowal" `is` cowal
     , "markinch" `is` markinch
     , "georgetown" `is` georgetown
+    , "lurgan" `is` lurgan
+    , "lurga" `is` lurgan
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -128,6 +130,7 @@ portrush = Comp "Portrush"
 rostrevor = Comp "Rostrevor"
 vit = Comp "Virginia International Tattoo"
 cookstown = Comp "Cookstown"
+lurgan = Comp "Lurgan"
 
 -- Solo comps
 ulsterSolos = Comp "Ulster Solos"
