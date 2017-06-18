@@ -79,6 +79,7 @@ comp =
     , "lurgan" `is` lurgan
     , "lurga" `is` lurgan
     , "lochore" `is` lochore
+    , "fermanagh" `is` enniskillen
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos
@@ -122,7 +123,7 @@ bangor = Comp "Bangor"
 dumbarton = Comp "Dumbarton"
 dunbar = Comp "Dunbar"
 dungannon = Comp "Dungannon"
-enniskillen = Comp "Enniskillen"
+enniskillen = Comp "Enniskillen" -- TODO this is Co Fermanagh Championships
 forres = Comp "Forres" -- TODO, this is one of the big comps in some years?
 gourock = Comp "Gourock"
 newcastle = Comp "Newcastle"
