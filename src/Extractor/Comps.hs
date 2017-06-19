@@ -3,11 +3,29 @@
 module Extractor.Comps where
 
 import           Control.Applicative
-import           Data.Text
+import           Data.List           (isPrefixOf)
+import           Data.Text           hiding (drop, empty, isPrefixOf, length)
 import           Extractor.Util
+import           Prelude             hiding (words)
 import           Types
-
 -- TODO ALMA
+
+findFirstMatch [] _ = empty
+findFirstMatch ((ws, func, v):rest) content
+  | func ws content = pure v
+  | otherwise = findFirstMatch rest content
+
+is a b = (words a, isPrefixOf, b)
+
+thisThenYear a b = (words a, prefixThenYear, b)
+
+prefixThenYear a b =
+  let matchesBeginning = a `isPrefixOf` b
+      restOfB = drop (length a) b
+      year = case restOfB of
+              (x:_) -> textToYear x
+              _     -> Nothing
+   in matchesBeginning && maybe False (const True) year
 
 comp :: Alternative f => [Text] -> f Comp
 comp =
@@ -81,6 +99,8 @@ comp =
     , "lochore" `is` lochore
     , "fermanagh" `is` enniskillen
     , "lisburn" `is` lisburn
+    -- , "glasgow" `thisThenYear` worlds -- this gives a few false positives
+    , "world" `thisThenYear` worlds
     ---
     , "ulster solos" `is` ulsterSolos
     , "ulster solo" `is` ulsterSolos

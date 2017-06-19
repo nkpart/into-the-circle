@@ -10,28 +10,22 @@
 module Main where
 
 import           Control.Lens
-import           Control.Monad.IO.Class
-import           Control.Monad.Trans.State
-import qualified Data.DList                as DL
-import           Data.Either               (partitionEithers)
-import           Data.Foldable             (fold, for_)
-import           Data.List                 (sort)
-import qualified Data.Map.Strict           as M
+import qualified Data.DList         as DL
+import           Data.Either        (partitionEithers)
+import           Data.Foldable      (fold, for_)
+import           Data.List          (sort)
+import qualified Data.Map.Strict    as M
 import           Data.Monoid
 import           Data.Ord
-import           Data.Text                 (Text, intercalate, pack, unpack)
-import qualified Data.Text.IO              as T
+import           Data.Text          (Text, intercalate, pack, unpack)
+import qualified Data.Text.IO       as T
 import           DrWho
 import           Extractor
 import           Extractor.Bands
-import           Lucid                     hiding (for_)
+import           Lucid              hiding (for_)
 import           Page
--- import           Prelude                   (Eq, FilePath, Foldable, IO, Show,
---                                             filter, fmap, foldMap, fst, length,
---                                             print, pure, show, ($), (.), (<$>),
---                                             (<$>), (==))
-import           System.Environment        (getEnv)
-import           System.Process            (callCommand)
+import           System.Environment (getEnv)
+import           System.Process     (callCommand)
 import           Types
 
 username :: Text -> Query
@@ -72,7 +66,7 @@ usersOfInterest =
 main :: IO ()
 main = do
   apiKey <- YoutubeApiKey . pack <$> getEnv "YOUTUBE_API_KEY"
-  (missing, built) <- fold <$> runWithCache (traverse (runUser apiKey) usersOfInterest)
+  (missing, built) <- fold <$> traverse (runUser apiKey) usersOfInterest
 
   print (length missing)
   print (length built)
@@ -118,12 +112,11 @@ dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =
     [(unChannel $ _videoChannel vu), _videoTitle vu, reason, videoUrl vu]
 
--- runUser :: Text -> Query -> IO ([Uncategorised], [VidKey])
-runUser :: YoutubeApiKey -> Query -> StateT Cache IO (DL.DList Uncategorised, DL.DList VidKey)
+runUser :: YoutubeApiKey -> Query -> IO (DL.DList Uncategorised, DL.DList VidKey)
 runUser apiKey u = do
-  liftIO $ print ("running-start" :: Text, u)
-  us <- cachedVideosForUser apiKey u
-  liftIO $ print ("running-end" :: Text, u)
+  print ("running-start" :: Text, u)
+  us <- cacheVideoQuery apiKey u
+  print ("running-end" :: Text, u)
   let process vu = (_Left %~ Uncategorised vu) . extractKey $ vu
   pure . over _2 DL.fromList . over _1 DL.fromList . partitionEithers . fmap process $ us
 

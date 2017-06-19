@@ -4,7 +4,7 @@ module Extractor.Remedy where
 import           Control.Applicative
 import           Control.Lens
 import           Control.Monad.State
-import           Extractor.Comps
+import           Extractor.Comps     hiding (is)
 import           Types
 
 remedy :: VidKey -> VidKey

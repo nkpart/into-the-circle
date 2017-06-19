@@ -72,6 +72,10 @@ queryView :: Query -> Text
 queryView (Username user alias) = maybe user id alias
 queryView (ChannelId _ alias)   = alias
 
+querySlug :: Query -> Text
+querySlug (Username t _)  = t
+querySlug (ChannelId c _) = c
+
 queryUri :: Query -> Text
 queryUri (Username u _)  = "https://youtube.com/user/" <> u
 queryUri (ChannelId c _) = "https://youtube.com/channel/" <> c

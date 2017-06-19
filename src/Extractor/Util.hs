@@ -1,15 +1,14 @@
 module Extractor.Util where
 
 import           Control.Applicative
-import           Data.List           (isPrefixOf)
-import           Data.Text           (Text, words)
-import           Prelude             (Eq, otherwise)
+import           Data.Char
+import           Data.Text           hiding (empty)
+import           Prelude             (Int, otherwise, read, (&&), (<), (==),
+                                      (>))
+import           Types
 
-findFirstMatch :: (Eq k, Alternative f) => [([k], a)] -> [k] -> f a
-findFirstMatch [] _ = empty
-findFirstMatch ((ws, v):rest) content
-  | ws `isPrefixOf` content = pure v
-  | otherwise = findFirstMatch rest content
-
-is :: Text -> t -> ([Text], t)
-is a b = (words a, b)
+textToYear :: Alternative f => Text -> f Year
+textToYear h | all isDigit h &&
+            length h == 4 &&
+            (let x = (read (unpack h) :: Int)  in  x > 1970 && x < 2040) = pure (Year (read (unpack h)))
+          | otherwise = empty

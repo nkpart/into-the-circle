@@ -11,13 +11,13 @@ import           Types
 
 
 findFirstMatch [] _ = mempty
-findFirstMatch ((ws, v):rest) content
-  | ws `isPrefixOf` content = v
+findFirstMatch ((ws, func, v):rest) content
+  | func ws content = v
   | otherwise = findFirstMatch rest content
 
-is a b = (words a, Option $ Just (Max (0, b)))
+is a b = (words a, isPrefixOf, Option $ Just (Max (0, b)))
 
-isLow a b = (words a, Option $ Just (Max (-1, b)))
+isLow a b = (words a, isPrefixOf, Option $ Just (Max (-1, b)))
 
 band :: [Text] -> Option (Max (Int, Band))
 band =

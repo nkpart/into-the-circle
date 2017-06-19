@@ -3,19 +3,18 @@
 module Extractor where
 
 import           Control.Applicative (Alternative, empty)
-import           Data.Char           (isDigit)
 import           Data.Foldable       (foldMap)
 import           Data.List           (tails)
 import           Data.Monoid         (Alt (..), (<>))
 import           Data.Ord
 import           Data.Semigroup      (Max (..), Option (..))
-import           Data.Text           (Text, all, length, unpack)
+import           Data.Text           (Text)
 import           Data.Time
 import           Extractor.Bands
 import           Extractor.Comps
 import           Extractor.Remedy
-import           Prelude             (Either (..), Int, Maybe (..), pure, read,
-                                      (&&), (==), (>))
+import           Extractor.Util
+import           Prelude             (Either (..), Int, Maybe (..), pure)
 import           Prelude             (fromInteger, ($), (.), (<$>), (<*>))
 import           Types
 
@@ -45,9 +44,8 @@ yearOf utcTime =
    in Year (fromInteger y)
 
 year :: Alternative f => [Text] -> f Year
-year (h:_)
-  | all isDigit h && length h == 4 && (let x = (read (unpack h) :: Int)  in  x > 1970 && x < 2040) = pure (Year (read (unpack h)))
-year _ = empty
+year (h:_) = textToYear h
+year _     = empty
 
 set :: Alternative f => [Text] -> f Set
 set ("msr":_)    = pure MSR

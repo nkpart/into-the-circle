@@ -1,9 +1,12 @@
+{-# LANGUAGE OverloadedStrings #-}
 module DrWho where
 
 import           Control.Monad.IO.Class
 import           Control.Monad.Trans.State
 import           Data.Functor.Compose
 import qualified Data.Map.Strict           as M
+import           Data.Monoid               ((<>))
+import           Data.Text                 (unpack)
 import           Data.Time
 import           System.Directory          (doesFileExist)
 import           Types
@@ -14,12 +17,17 @@ cacheFile = "vids.dat"
 
 type Cache = M.Map Query (Stored [Video])
 
-runWithCache :: StateT Cache IO a -> IO a
-runWithCache  action =
-  do cache <- loadCache cacheFile
+runWithCache :: FilePath -> StateT Cache IO a -> IO a
+runWithCache fp action =
+  do cache <- loadCache fp
      (a,r) <- runStateT action cache
-     saveCache r cacheFile
+     saveCache r fp
      pure a
+
+cacheVideoQuery :: YoutubeApiKey -> Query -> IO [Video]
+cacheVideoQuery apiKey q =
+  let fname = unpack $ "cache/" <> querySlug q <> ".hsdata"
+  in runWithCache fname (cachedVideosForUser apiKey q)
 
 cachedVideosForUser :: YoutubeApiKey -> Query -> StateT Cache IO [Video]
 cachedVideosForUser apiKey q = do
@@ -27,7 +35,6 @@ cachedVideosForUser apiKey q = do
   now <- liftIO $ getCurrentTime
   (vids, newCache) <- liftIO $ lookupOrRefresh now cache q (listVideosForUser apiKey q)
   put newCache
-  --  saveCache newCache cacheFile
   pure vids
 
 loadCache :: FilePath -> IO Cache
