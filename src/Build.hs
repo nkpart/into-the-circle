@@ -61,6 +61,7 @@ usersOfInterest =
   , ChannelId "UC9772NGfrz4XrDN8e9wO1HQ" "StudioStabilo"
   , aliasedUser "zippyzipster" "We Love Pipe Bands/ Loud Pipes Visual Media"
   , username "TheMillarballs"
+  , ChannelId "UCKYUJWJ0ujZ_RZ8ZPrEZSvw" "Pipe Band TV"
   ]
 
 main :: IO ()
