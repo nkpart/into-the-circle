@@ -62,6 +62,8 @@ usersOfInterest =
   , aliasedUser "zippyzipster" "We Love Pipe Bands/ Loud Pipes Visual Media"
   , username "TheMillarballs"
   , ChannelId "UCKYUJWJ0ujZ_RZ8ZPrEZSvw" "Pipe Band TV"
+  , ChannelId "UCBlddw6QaBCtfOPDERBE4Ug" "Robert Mitchelmore"
+  , ChannelId "UCSDi59T263CkjC202fqQ_Ow" "Alba TV"
   ]
 
 main :: IO ()
