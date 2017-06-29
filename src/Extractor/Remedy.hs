@@ -14,7 +14,7 @@ remedy a = execState m a
       -- Correct for typo
       isEq vidKeyYear (Year 2106) $ vidKeyYear .= Year 2016
 
-      is vidKeyYear (within 2012 2016) .
+      is vidKeyYear (within 2012 2017) .
         isEq vidKeyComp forres $ vidKeyComp .= europeanChampionship
 
       is vidKeyYear (within 2010 2016) .
