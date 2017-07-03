@@ -40,6 +40,7 @@ band =
     , "field marshal montgomery" `is` fmm
     , "field marshall montgomery" `is` fmm
     , "fm medley" `is` fmm
+    , "field marshal pipers" `is` fmm
     , "fife constabulary" `is` fifeConstabulary
     , "glasgow police" `is` glasgowPolice
     , "inveraray" `is` inveraray
