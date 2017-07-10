@@ -27,11 +27,14 @@ readAllPages
   => YoutubeApiKey -> Text -> Maybe Text -> Pipes.Producer [Video] m ()
 readAllPages apiKey playlist pageToken = do
   do (token, items) <- liftIO (getChannelUploads apiKey playlist pageToken)
+
+     -- deal with items
      deets <- liftIO $ getVideosDetails apiKey (fmap _videoId items)
      if (length items == length deets)
        then Pipes.yield (zipWith (set videoExt) deets items)
        else fail "did not expect this"
 
+     -- deal with pagination
      case token of
        Just v  -> readAllPages apiKey playlist (Just v)
        Nothing -> pure ()
