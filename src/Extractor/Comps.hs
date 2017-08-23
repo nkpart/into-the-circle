@@ -73,7 +73,9 @@ comp =
     , "ulster champions" `is` ulsterChampionships
     , "vit" `is` vit
     , "world champions" `is` worlds
+    , "worlds grade 2" `is` worlds
     , "world championships" `is` worlds
+    , "world championship" `is` worlds
     , "world pipe band championships" `is` worlds
     , "world pipe band champiosnhips" `is` worlds
     , "world drum corp champions" `is` worlds
@@ -112,6 +114,8 @@ comp =
     , "motherwell concert" `is` motherwellConcert
     , "impact" `is` impact
     , "todds bar recital" `is` toddsBarRecital
+    , "shotts dykehead caledonia pipe band concert" `is` shottsRise
+    , "rise concert" `is` shottsRise
     ]
 
 northBerwick = Comp "North Berwick"
@@ -169,3 +173,4 @@ pipingLive = Comp "Piping Live"
 liveBackInIreland = Comp "Live Back In Ireland"
 winterstorm = Comp "Winterstorm"
 toddsBarRecital = Comp "Todd's Bar Recital"
+shottsRise = Comp "RISE"
