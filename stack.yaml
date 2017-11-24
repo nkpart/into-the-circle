@@ -2,7 +2,4 @@ resolver: nightly-2017-08-20
 
 packages:
 - '.'
-extra-deps: 
-# - containers-0.5.7.1
-# - lens-4.15.2
-
+extra-deps: []

@@ -17,7 +17,7 @@ remedy a = execState m a
       is vidKeyYear (within 2012 2017) .
         isEq vidKeyComp forres $ vidKeyComp .= europeanChampionship
 
-      is vidKeyYear (within 2010 2016) .
+      is vidKeyYear (within 2010 2017) .
         isEq vidKeyComp dumbarton $ vidKeyComp .= scottishChampionship
 
       isEq vidKeyYear (Year 2017) .

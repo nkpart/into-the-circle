@@ -64,6 +64,9 @@ usersOfInterest =
   , ChannelId "UCKYUJWJ0ujZ_RZ8ZPrEZSvw" "Pipe Band TV"
   , ChannelId "UCBlddw6QaBCtfOPDERBE4Ug" "Robert Mitchelmore"
   , ChannelId "UCSDi59T263CkjC202fqQ_Ow" "Alba TV"
+  , ChannelId "UCUep_ro7rvnXgGG1CqmeBDg" "Kenneth Macfarlane"
+  , username "scotpet"
+  , ChannelId "UChy0J4ytBkPP4WV78R7ogiA" "Andrew Thomson"
   ]
 
 main :: IO ()
@@ -89,7 +92,7 @@ main = do
 
   -- 1 per year
   for_ s $ \(yy@(Down (Year y')), rr) -> do
-    renderToFile ("docs/" <> show y' <> ".html") (templateBase ( "Showing recordings from " <> (pack . show $ y')) (Site [(yy, rr)]))
+    renderToFile ("docs/" <> show y' <> ".html") (templateBase ( "" <> (pack . show $ y')) (Site [(yy, rr)]))
 
   -- Per Band
   for_ bandsAndVids $ \(bb, vids) -> do

@@ -43,6 +43,7 @@ band =
     , "field marshal pipers" `is` fmm
     , "fife constabulary" `is` fifeConstabulary
     , "glasgow police" `is` glasgowPolice
+    , "glasgow skye" `is` glasgowSkye
     , "inveraray" `is` inveraray
     , "inverary" `is` inveraray
     , "la scots" `is` laScots
@@ -93,6 +94,7 @@ dowco = Band "Dowco Triumph Street Pipe Band"
 fifeConstabulary = Band "Fife Constabulary Pipe Band"
 fmm = Band "Field Marshal Montgomery"
 glasgowPolice = Band "Glasgow Police Pipe Band"
+glasgowSkye = Band "The Glasgow Skye Association"
 inveraray = Band "Inveraray & District Pipe Band"
 laScots = Band "LA Scots Pipe Band"
 lothianAndBorders = Band "Lothian and Borders Police Pipe Band"
