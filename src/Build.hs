@@ -67,6 +67,7 @@ usersOfInterest =
   , ChannelId "UCUep_ro7rvnXgGG1CqmeBDg" "Kenneth Macfarlane"
   , username "scotpet"
   , ChannelId "UChy0J4ytBkPP4WV78R7ogiA" "Andrew Thomson"
+  , ChannelId "UCLkhMT4HNSypw62_6i11eNQ" "topline143"
   ]
 
 main :: IO ()

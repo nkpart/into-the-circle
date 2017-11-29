@@ -2692,6 +2692,8 @@
 2013,Worlds,OtherBand,Unknown,FullBand,"Worlds 2013  - Grade 1 & 2 Announcement",ThereIsOnlyOneStuart
 2013,Worlds,OtherBand,MSR,Drum,"2013 Innerleithen GWC Juvenile Grade 2",Neil Fraser
 2013,Worlds,OtherBand,Medley,Drum,"2013 Innerleithen GWC Juvenile Grade 3",Neil Fraser
+2012,All Ireland,OtherBand,MSR,FullBand,"FMM Pipe Band tuning up All Ireland 2012",topline143
+2012,All Ireland,OtherBand,Unknown,FullBand,"Howard Memorial Pipe Band All Ireland 2012",topline143
 2012,All Ireland,OtherBand,Unknown,FullBand,"Cullen Pipe band All Ireland 2012",allynv vance
 2012,All Ireland,OtherBand,Unknown,FullBand,"Manorcunningham Pipe Band All Ireland 2012",allynv vance
 2012,Alma,OtherBand,MSR,FullBand,"Windsor Police Pipe Band MSR Alma 2012-05-26 SANY1062",weekendsinontario
@@ -2716,6 +2718,7 @@
 2012,Ards and North Down,OtherBand,Unknown,FullBand,"Seven Towers Pipe Band - Ards 2012",MrUlsterscot
 2012,Ards and North Down,OtherBand,Unknown,Drum,"Quinn Memorial Pipe Band Drum Corps - Ards 2012",MrUlsterscot
 2012,Bangor,Band "Pipes and Drums of the PSNI",Unknown,FullBand,"PSNI Pipe Band, Bangor, 2012",rennieaj
+2012,Bangor,Band "St Laurence O'Toole",MSR,FullBand,"SLOT Pipe Band at Bangor 2012",topline143
 2012,British Championships,Band "Field Marshal Montgomery",MSR,FullBand,"Field Marshal Montgomery Pipe Band takes the 2012 British Championship",dronechorus
 2012,British Championships,Band "Fife Constabulary Pipe Band",MSR,FullBand,"Fife Constabulary Pipe Band: 2012 British Championships, Annan",dronechorus
 2012,British Championships,Band "Inveraray & District Pipe Band",MSR,FullBand,"Inveraray & District Pipe Band - 2012 British Championships, Annan",dronechorus
@@ -2788,17 +2791,21 @@
 2012,European Championships,Band "Pipes and Drums of the PSNI",Unknown,FullBand,"Europeans 2012: Police Service of Northern Ireland Pipes & Drums",ThereIsOnlyOneStuart
 2012,European Championships,Band "Scottish Power Pipe Band",MSR,FullBand,"Inveraray & District: European Pipe Band Championships 2012",dronechorus
 2012,European Championships,Band "Scottish Power Pipe Band",MSR,FullBand,"Scottish Power: European Pipe Band Championships 2012",dronechorus
+2012,European Championships,Band "Scottish Power Pipe Band",Unknown,Drum,"Scottish Power Pipe Band Drum Corps European Championships,Belfast 2012",topline143
 2012,European Championships,Band "St Laurence O'Toole",MSR,FullBand,"St Laurence O'Toole: European Pipe Band Championships 2012",dronechorus
 2012,European Championships,Band "St Laurence O'Toole",Unknown,FullBand,"Europeans 2012: St Laurence O'Toole Development Pipe Band",ThereIsOnlyOneStuart
 2012,European Championships,Band "Strathclyde Police Pipe Band",MSR,FullBand,"Strathclyde Police Pipe Band: European Championships 2012",dronechorus
 2012,European Championships,Band "Strathclyde Police Pipe Band",MSR,FullBand,"Strathclyde Police Pipe Band - European Championships 2012",MrUlsterscot
 2012,European Championships,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band - European Championships 2012",MrUlsterscot
+2012,European Championships,Band "Strathclyde Police Pipe Band",Unknown,Drum,"Strathclyde Police Pipe Band Drum Corps..European Championships 2012",topline143
 2012,European Championships,Band "Strathclyde Police Pipe Band",Unknown,Drum,"Strathclyde Police Pipe Band Drum Corps - European Championships 2012",MrUlsterscot
 2012,European Championships,Band "The Glasgow Skye Association",Unknown,FullBand,"Glasgow Skye Association Pipe Band European Pipe Band championships 2012",allynv vance
+2012,European Championships,Band "The Vale of Atholl Pipe Band",Unknown,Drum,"Vale of Atholl Pipe Band Drum Corps European Championships,Belfast 2012",topline143
 2012,European Championships,OtherBand,Medley,FullBand,"George Watson's College Pipe Band: Juvenile European Champions 2012",dronechorus
 2012,European Championships,OtherBand,Unknown,FullBand,"Manorcunningham Pipe band European Pipe Band championships 2012",allynv vance
 2012,European Championships,OtherBand,Unknown,FullBand,"University of Bedfordshire Pipe Band European Pipe Band Championships 2012",allynv vance
 2012,European Championships,OtherBand,Unknown,FullBand,"Denny and Dunipace Pipe Band European Pipe band Championships 2012",allynv vance
+2012,European Championships,OtherBand,Unknown,FullBand,"Howard Memorial Pipe Band European Championships Belfast 2012",topline143
 2012,European Championships,OtherBand,Unknown,FullBand,"Europeans 2012: Kintyre Schools Pipe Band",ThereIsOnlyOneStuart
 2012,European Championships,OtherBand,Unknown,FullBand,"Torphichen & Bathgate Pipe Band - European Championships 2012",MrUlsterscot
 2012,European Championships,OtherBand,Unknown,FullBand,"Buchan Pipe Band European Pipe Band Championships 2012-Stormont",allynv vance
@@ -2936,6 +2943,7 @@
 2012,Ulster Championships,OtherBand,Unknown,FullBand,"Manorcunningham Pipe Band Ulster Championships 2012",allynv vance
 2012,Ulster Championships,OtherBand,Unknown,FullBand,"Aughintober Pipe Band Ulster Championships 2012",allynv vance
 2012,Ulster Championships,OtherBand,Unknown,FullBand,"Howard Memorial Pipe band Ulster Championships 2012",allynv vance
+2012,Worlds,Band "78th Fraser Highlanders",MSR,FullBand,"78th Fraser Highlanders Pipe Band 2012 Worlds",topline143
 2012,Worlds,Band "78th Fraser Highlanders",Medley,FullBand,"Worlds 2012 - 78th Fraser Highlanders Grade 1 Qualification Medley",Neil Fraser
 2012,Worlds,Band "78th Fraser Highlanders",Medley,FullBand,"78th Fraser Highlanders: Medley - WORLDS 2012",piperbob2
 2012,Worlds,Band "78th Fraser Highlanders",Medley,Drum,"78th Fraser Highlanders Pipe Band Drum Corps - World Pipe Band Championships 2012",MrUlsterscot
@@ -2943,12 +2951,16 @@
 2012,Worlds,Band "Boghall and Bathgate Caledonia Pipe Band",Unknown,FullBand,"Boghall & Bathgate Caledonia Juvenile: WORLDS 2012",piperbob2
 2012,Worlds,Band "Boghall and Bathgate Caledonia Pipe Band",Medley,Drum,"Boghall & Bathgate Caledonia Pipe Band Drum Corps - World Pipe Band Championships 2012",MrUlsterscot
 2012,Worlds,Band "Boghall and Bathgate Caledonia Pipe Band",Unknown,Drum,"Worlds 2012 - Boghall & Bathgate Juvenile Pipe Band",Neil Fraser
+2012,Worlds,Band "Boghall and Bathgate Caledonia Pipe Band",Unknown,Drum,"Boghall and Bathgate Pipe Band Drum Corps 2012 Worlds..",topline143
 2012,Worlds,Band "Cullybackey Pipe Band",Medley,FullBand,"Cullybackey Pipe Band - Worlds 2012",MrUlsterscot
 2012,Worlds,Band "Cullybackey Pipe Band",Medley,FullBand,"Cullybackey: Medley - WORLDS 2012",piperbob2
 2012,Worlds,Band "Dowco Triumph Street Pipe Band",Medley,FullBand,"Triumph Street: Medley - WORLDS 2012",piperbob2
+2012,Worlds,Band "Field Marshal Montgomery",MSR,FullBand,"Field Marshal Montgomery Pipe Band Worlds 2012",topline143
 2012,Worlds,Band "Field Marshal Montgomery",Medley,FullBand,"Field Marshal Montgomery: World Champions 2012 - Results and Medley",dronechorus
 2012,Worlds,Band "Field Marshal Montgomery",Medley,FullBand,"Field Marshal Montgomery: Medley - WORLDS 2012",piperbob2
 2012,Worlds,Band "Field Marshal Montgomery",Unknown,FullBand,"Field Marshal Montgomery: 2012 World Champions",pipes|drums Magazine
+2012,Worlds,Band "Field Marshal Montgomery",Unknown,FullBand,"Field Marshal Montgomery Pipe Band World Champions 2012",topline143
+2012,Worlds,Band "Field Marshal Montgomery",Unknown,FullBand,"Field Marshal Montgomery Pipe Band World Champions 2012",topline143
 2012,Worlds,Band "Field Marshal Montgomery",Unknown,FullBand,"Field Marshal Montgomery Pipe Band - World Champions 2012",MrUlsterscot
 2012,Worlds,Band "Field Marshal Montgomery",Unknown,FullBand,"Field Marshal Montgomery Pipe Band - walking back to the bus as World Champions 2012",MrUlsterscot
 2012,Worlds,Band "Fife Constabulary Pipe Band",Medley,FullBand,"Fife Constabulary: Medley - WORLDS 2012",piperbob2
@@ -2969,6 +2981,7 @@
 2012,Worlds,Band "Scottish Power Pipe Band",Medley,FullBand,"Scottish Power: Medley -WORLDS 2012",piperbob2
 2012,Worlds,Band "Scottish Power Pipe Band",Medley,FullBand,"Scottish Power: Quartet Contest 2012",piperbob2
 2012,Worlds,Band "Scottish Power Pipe Band",Medley,FullBand,"ScottishPower Pipe Band - National Piping Centre Practice, Worlds 2012",MrUlsterscot
+2012,Worlds,Band "Scottish Power Pipe Band",Medley,FullBand,"Scottish Power Pipe Band 2012 Worlds",topline143
 2012,Worlds,Band "Scottish Power Pipe Band",Unknown,FullBand,"David Sheddon: Hornpipe & Jig - Pipe Idol 2012",piperbob2
 2012,Worlds,Band "Scottish Power Pipe Band",Unknown,FullBand,"Scottish Power Marching to the bus worlds 2012",allynv vance
 2012,Worlds,Band "Scottish Power Pipe Band",Unknown,Pipe,"Scottish Power Pipe Band Pipe Corps - World Championships 2012",MrUlsterscot
@@ -3188,6 +3201,7 @@
 2011,Gourock,Band "Shotts and Dykehead Caledonia",Unknown,FullBand,"Shotts rebound at Gourock",dronechorus
 2011,Lisburn,Band "Pipes and Drums of the PSNI",Unknown,FullBand,"PSNI PIPE BAND LISBURN  2011",rennieaj
 2011,Newcastle,Band "Pipes and Drums of the PSNI",MSR,FullBand,"PSNI Pipe Band Newcastle 2011 MSR",rennieaj
+2011,Newcastle,OtherBand,Unknown,FullBand,"Pipes & Drums Of The Royal Ulster Constabulary GC Pipe Band 1998.wmv",topline143
 2011,North Berwick,OtherBand,Unknown,FullBand,"North Berwick 2011 - Grade 2. GWC Juvenile Pipe Band. George Watson's College",Neil Fraser
 2011,North Berwick,OtherBand,Unknown,FullBand,"North Berwick 2011 - Juvenile Grade.  GWC Juvenile Pipe Band.  George Watson's College",Neil Fraser
 2011,North Down Pipe Band Championships,Band "Cullybackey Pipe Band",Medley,FullBand,"Cullybackey Pipe Band - North Down Pipe Band Championships 2011",MrUlsterscot
@@ -3316,8 +3330,10 @@
 2011,Worlds,Band "Shotts and Dykehead Caledonia",MSR,FullBand,"House of Edgar Shotts & Dykehead Caledonia Pipe Band - World Championships 2011",MrUlsterscot
 2011,Worlds,Band "Shotts and Dykehead Caledonia",Medley,FullBand,"Shotts & Dykehead - Worlds 2011: Grade 1 / Medley",piperbob2
 2011,Worlds,Band "Shotts and Dykehead Caledonia",Medley,FullBand,"House of Edgar Shotts & Dykehead Caledonia Pipe Band - World Championships 2011",MrUlsterscot
+2011,Worlds,Band "Shotts and Dykehead Caledonia",Unknown,Drum,"Shotts & Dykehead Pipe Band Drum Corps Worlds 2011",topline143
 2011,Worlds,Band "Shotts and Dykehead Caledonia",Unknown,Drum,"House of Edgar Shotts & Dykehead Caledonia Drum Corps Salute - World Pipe Band Championships 2011",MrUlsterscot
 2011,Worlds,Band "Shotts and Dykehead Caledonia",Unknown,Drum,"House of Edgar Shotts & Dykehead Caledonia Pipe Band Drum Corps - World Championships 2011",MrUlsterscot
+2011,Worlds,Band "Shotts and Dykehead Caledonia",Unknown,Drum,"Shotts & Dykehead Pipe Band Worlds 2011",topline143
 2011,Worlds,Band "Simon Fraser University Pipe Band",MSR,FullBand,"Simon Fraser University Pipe Band - World Championships 2011",MrUlsterscot
 2011,Worlds,Band "Simon Fraser University Pipe Band",MSR,FullBand,"Simon Fraser University Pipe Band - World Championships 2011",MrUlsterscot
 2011,Worlds,Band "Simon Fraser University Pipe Band",Medley,FullBand,"Simon Fraser University Pipe Band - World Championships 2011",MrUlsterscot
@@ -3344,6 +3360,7 @@
 2011,Worlds,Band "The Vale of Atholl Pipe Band",Unknown,FullBand,"Vale of Atholl Juvenile - World's 2011",pipes|drums Magazine
 2011,Worlds,OtherBand,MSR,FullBand,"North West-White Spot United: Worlds 2011/Juvenile",piperbob2
 2011,Worlds,OtherBand,MSR,FullBand,"George Watson's College Pipe Band: Worlds 2011/Juvenile",piperbob2
+2011,Worlds,OtherBand,MSR,FullBand,"FMM Pipe Band at the 2011 Worlds..",topline143
 2011,Worlds,OtherBand,MSR,FullBand,"Oran Mor Pipe Band - World Championships 2011",MrUlsterscot
 2011,Worlds,OtherBand,MSR,FullBand,"Oban High School Pipe Band: Worlds 2011/Juvenile",piperbob2
 2011,Worlds,OtherBand,MSR,FullBand,"North Lanarkshire Schools Pipe Band: Worlds 2011/Juvenile",piperbob2
@@ -3380,6 +3397,7 @@
 2011,Worlds,OtherBand,Unknown,FullBand,"Kintyre Schools Novice Juvenile Pipe Band World Championships 2011",Neil Fraser
 2011,Worlds,OtherBand,MSR,Drum,"GWC Juvenile World Champions 2011.  World Pipe Band Championships 2011. George Watson's College MSR",Neil Fraser
 2011,Worlds,OtherBand,MSR,Drum,"George Watson's Juvenile Pipe Band World Champions 2011. The Worlds 2011. GWC MSR updated 1080p",Neil Fraser
+2011,Worlds,OtherBand,Unknown,Drum,"SFU Pipe Band Worlds 2011",topline143
 2010,Alma,Band "Peel Regional Police Pipe Band",MSR,FullBand,"Peel Regional Police Pipe Band MSR at Alma 2010",Jeff Craig
 2010,Alma,Band "Peel Regional Police Pipe Band",Medley,FullBand,"Peel Regional Police Pipe Band Medley at Alma",Jeff Craig
 2010,Alma,Band "Peel Regional Police Pipe Band",Medley,FullBand,"Peel Regional Police Alma G1 Medley SANY0633.MP4",weekendsinontario
@@ -3427,6 +3445,8 @@
 2010,European Championships,Band "St Laurence O'Toole",Unknown,FullBand,"St Laurence O'Toole at Belfast 2010",dronechorus
 2010,European Championships,Band "Strathclyde Police Pipe Band",MSR,FullBand,"Strathclyde Police - European C'ships 2010",quickmarch
 2010,European Championships,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band - European Championships 2010",MrUlsterscot
+2010,European Championships,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band",topline143
+2010,European Championships,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band",topline143
 2010,European Championships,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police at Belfast 2010",dronechorus
 2010,European Championships,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band - European Championships 2010",MrUlsterscot
 2010,European Championships,Band "Strathclyde Police Pipe Band",Unknown,Drum,"Strathclyde Police Pipe Band Drum Corps - European Championships 2010",MrUlsterscot
@@ -3489,6 +3509,7 @@
 2010,Worlds,Band "78th Fraser Highlanders",Medley,FullBand,"78th Fraser Highlanders Pipe Band - World Championships 2010",MrUlsterscot
 2010,Worlds,Band "78th Fraser Highlanders",Medley,FullBand,"Pipe Major Bill Livingstone's Farewell to the 78th Fraser Highlanders",dronechorus
 2010,Worlds,Band "78th Fraser Highlanders",Unknown,FullBand,"78th Fraser Highlanders Pipe Band - World Championships 2010",MrUlsterscot
+2010,Worlds,Band "78th Fraser Highlanders",Unknown,FullBand,"78th Fraser Highlanders Pipe Band Worlds 2010",topline143
 2010,Worlds,Band "78th Fraser Highlanders",Unknown,FullBand,"78th Fraser Highlanders Pipe Band - World Championships 2010",MrUlsterscot
 2010,Worlds,Band "Auckland & District Pipe Band",Unknown,FullBand,"Auckland & District Pipe Band - World Championships 2010",MrUlsterscot
 2010,Worlds,Band "Auckland & District Pipe Band",Unknown,Drum,"Auckland & District Pipe Band Drum Corps - World Championships 2010",MrUlsterscot
@@ -3569,7 +3590,12 @@
 2010,Worlds,Band "Strathclyde Police Pipe Band",Medley,FullBand,"Strathclyde Police Pipe Band: Worlds 2010",piperbob2
 2010,Worlds,Band "Strathclyde Police Pipe Band",Medley,FullBand,"Strathclyde Police Pipe Band - World Championships 2010",MrUlsterscot
 2010,Worlds,Band "Strathclyde Police Pipe Band",Medley,FullBand,"Strathclyde Police Pipe Band - World Championships 2010",MrUlsterscot
+2010,Worlds,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band Worlds 2010.",topline143
+2010,Worlds,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band Worlds 2010",topline143
+2010,Worlds,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band Worlds 2010",topline143
+2010,Worlds,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band Worlds 2010",topline143
 2010,Worlds,Band "Strathclyde Police Pipe Band",Unknown,Drum,"Strathclyde Police Pipe Band Drum Corps - World Championships 2010",MrUlsterscot
+2010,Worlds,Band "Strathclyde Police Pipe Band",Unknown,Drum,"Strathclyde Police Pipe Band Drum Corps",topline143
 2010,Worlds,Band "The Vale of Atholl Pipe Band",Medley,FullBand,"Robert Wiseman Dairies Vale of Atholl Pipe Band - World Championships 2010",MrUlsterscot
 2010,Worlds,Band "The Vale of Atholl Pipe Band",Medley,FullBand,"Vale of Atholl Pipe Band: Worlds 2010",piperbob2
 2010,Worlds,Band "The Vale of Atholl Pipe Band",Unknown,FullBand,"Vale of Atholl Pipe Band: Worlds 2010",piperbob2
@@ -3801,6 +3827,7 @@
 2005,Worlds,Band "Simon Fraser University Pipe Band",MSR,FullBand,"Simon Fraser University Pipe Band 2005 MSR",samramsaydrummer
 2005,Worlds,Band "Simon Fraser University Pipe Band",Medley,FullBand,"Simon Fraser University Pipe Band Medley 2005",samramsaydrummer
 2005,Worlds,Band "St Laurence O'Toole",Medley,FullBand,"St. Lawrence O'Toole 2005 Medley",samramsaydrummer
+2004,Worlds,Band "Strathclyde Police Pipe Band",Unknown,FullBand,"Strathclyde Police Pipe Band Worlds 2004",topline143
 2003,European Championships,OtherBand,Unknown,FullBand,"European Pipe Band Championships 2003:  Bucksburn & District",ThereIsOnlyOneStuart
 2002,Worlds,Band "78th Fraser Highlanders",Unknown,FullBand,"Worlds 2002 - 78th Fraser Highlanders Pipe Band",Tyler Fry
 2002,Worlds,Band "Boghall and Bathgate Caledonia Pipe Band",Unknown,FullBand,"Worlds 2002 - Boghall & Bathgate Caledonia Pipe Band",Tyler Fry
@@ -3812,6 +3839,7 @@
 2002,Worlds,OtherBand,Unknown,FullBand,"Worlds 2002 - St Lawrence O'Tool Pipe Band",Tyler Fry
 2002,Worlds,OtherBand,Unknown,FullBand,"Worlds 2002 - David Urquhart Travel Pipe Band",Tyler Fry
 2001,Alma,Band "78th Fraser Highlanders",Unknown,FullBand,"Alma 2001 - 78th Fraser Highlanders Pipe Band",Tyler Fry
+2001,Ulster Championships,Band "Ravara Pipe Band",Unknown,FullBand,"Ravara Pipe Band Ulster Championships 2001.",topline143
 2000,Worlds,Band "78th Fraser Highlanders",Unknown,FullBand,"Worlds 2000 - 78th Fraser Highlanders  Pipe Band 1",Tyler Fry
 2000,Worlds,Band "78th Fraser Highlanders",Unknown,FullBand,"Worlds 2000 - 78th Fraser Highlanders  Pipe Band 2",Tyler Fry
 1999,Alma,Band "78th Fraser Highlanders",Unknown,FullBand,"Alma 1999 - 78th Fraser Highlanders Pipe Band 1",Tyler Fry
