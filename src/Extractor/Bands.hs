@@ -77,6 +77,7 @@ band =
     , "solos" `is` soloist
     , "solo" `is` soloist
     , "todds bar recital" `is` soloist
+    , "pipe idol" `is` soloist
     , "pipe band" `isLow` otherBand
     , "pipes and drums" `isLow` otherBand
     ]
