@@ -116,6 +116,7 @@ comp =
     , "todds bar recital" `is` toddsBarRecital
     , "shotts dykehead caledonia pipe band concert" `is` shottsRise
     , "rise concert" `is` shottsRise
+    , "renfrew ferry concert" `is` renfrewFerryConcert
     ]
 
 northBerwick = Comp "North Berwick"
@@ -174,3 +175,4 @@ liveBackInIreland = Comp "Live Back In Ireland"
 winterstorm = Comp "Winterstorm"
 toddsBarRecital = Comp "Todd's Bar Recital"
 shottsRise = Comp "RISE"
+renfrewFerryConcert = Comp "Renfrew Ferry Concert"

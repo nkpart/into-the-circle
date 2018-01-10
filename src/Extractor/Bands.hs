@@ -45,6 +45,7 @@ band =
     , "glasgow police" `is` glasgowPolice
     , "glasgow skye" `is` glasgowSkye
     , "inveraray" `is` inveraray
+    , "inverarary" `is` inveraray
     , "inverary" `is` inveraray
     , "la scots" `is` laScots
     , "lothian and borders police pipe band" `is` lothianAndBorders
