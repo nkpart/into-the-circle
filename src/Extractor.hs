@@ -7,7 +7,7 @@ import           Data.Foldable       (foldMap)
 import           Data.List           (tails)
 import           Data.Monoid         (Alt (..), (<>))
 import           Data.Ord
-import           Data.Semigroup      (Max (..), Option (..))
+import           Data.Semigroup      (Min (..), Option (..))
 import           Data.Text           (Text)
 import           Data.Time
 import           Extractor.Bands
@@ -63,8 +63,8 @@ corp _                  = empty
 Alt (Just v) <??> _ = pure v
 Alt (Nothing) <??> m = Left m
 
-(<???>) :: Option (Max (Int, a)) -> t -> Either t a
-Option (Just (Max (_, b))) <???> _ = pure b
+(<???>) :: Option (Min (Int, a)) -> t -> Either t a
+Option (Just (Min (_, b))) <???> _ = pure b
 Option Nothing <???> e = Left e
 
 (<.>) :: Alt Maybe t -> t -> t

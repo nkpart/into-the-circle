@@ -6,20 +6,28 @@ import           Data.List      (isPrefixOf)
 import           Data.Monoid
 import           Data.Semigroup
 import           Data.Text      (Text, words)
-import           Prelude        (Int, Maybe (..), otherwise, ($))
+import           Prelude        (Bool, Eq, Int, Maybe (..), Num, otherwise, ($))
 import           Types
 
 
+findFirstMatch :: Monoid p => [(t1, t1 -> t2 -> Bool, p)] -> t2 -> p
 findFirstMatch [] _ = mempty
 findFirstMatch ((ws, func, v):rest) content
   | func ws content = v
   | otherwise = findFirstMatch rest content
 
-is a b = (words a, isPrefixOf, Option $ Just (Max (0, b)))
+is :: (Num p, Eq a1) => Text -> b -> ([Text], [a1] -> [a1] -> Bool, Option (Min (p, b)))
+is a b = (words a, isPrefixOf, Option $ Just (Min (0, b)))
 
-isLow a b = (words a, isPrefixOf, Option $ Just (Max (-1, b)))
+isHigh :: (Num p, Eq a1) => Text -> b -> ([Text], [a1] -> [a1] -> Bool, Option (Min (p, b)))
+isHigh a b = (words a, isPrefixOf, Option $ Just (Min (-1, b)))
 
-band :: [Text] -> Option (Max (Int, Band))
+atPriority n a b = (words a, isPrefixOf, Option $ Just (Min (n, b)))
+
+isLow :: (Num p, Eq a1) => Text -> b -> ([Text], [a1] -> [a1] -> Bool, Option (Min (p, b)))
+isLow a b = (words a, isPrefixOf, Option $ Just (Min (1, b)))
+
+band :: [Text] -> Option (Min (Int, Band))
 band =
   findFirstMatch
     [ "78th fraser highlanders" `is` _78thsFraserHighlanders
@@ -74,10 +82,10 @@ band =
     , "vale of atholl" `is` theVale
     , "victoria police pipe band" `is` vppb
     --- Really want to match this last I think
-    , "solos" `is` soloist
-    , "solo" `is` soloist
-    , "todds bar recital" `is` soloist
-    , "pipe idol" `is` soloist
+    , "solos" `isHigh` soloist
+    , "solo" `isHigh` soloist
+    , "todds bar recital" `isHigh` soloist
+    , "pipe idol" `isHigh` soloist
     , "pipe band" `isLow` otherBand
     , "pipes and drums" `isLow` otherBand
     ]
