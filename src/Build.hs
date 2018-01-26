@@ -10,13 +10,13 @@
 module Main where
 
 import           Control.Lens
-import qualified Data.DList         as DL
+import           Control.Monad      (unless)
 import           Data.Either        (partitionEithers)
-import           Data.Foldable      (fold, for_)
-import           Data.List          (sort)
+import           Data.Foldable      (fold, for_, toList)
 import qualified Data.Map.Strict    as M
 import           Data.Monoid
 import           Data.Ord
+import qualified Data.Sequence      as S
 import           Data.Text          (Text, intercalate, pack, unpack)
 import qualified Data.Text.IO       as T
 import           DrWho
@@ -84,33 +84,38 @@ main = do
 
   let Site s = buildSite JustDoIt built
       years = s ^.. traverse . _1 . _Down
-      bandsAndVids = (fmap.fmap) DL.toList . M.toList . M.fromListWith mappend . fmap (\v -> (_vidKeyBand v, DL.singleton v)) $ DL.toList built
+      bandsAndVids = M.toList . M.fromListWith mappend . toList . fmap (\v -> (_vidKeyBand v, S.singleton v)) $ built
       bands = fmap fst bandsAndVids
       templateBase = contentPage
 
   -- Statistics
+  putStrLn "Stats"
   T.writeFile "missed.csv" . foldMap ((<> "\n") . intercalate "," . dispError) $ missing
-  renderToCsv "index.csv" (sort $ DL.toList built)
+  renderToCsv "index.csv" (S.sort $ built)
 
   -- Index
+  putStrLn "Index"
   renderToFile "docs/index.html" (indexPage usersOfInterest years bands)
 
   -- 1 per year
+  putStrLn "Years"
   for_ s $ \(yy@(Down (Year y')), rr) -> do
     renderToFile ("docs/" <> show y' <> ".html") (templateBase ( "" <> (pack . show $ y')) (Site [(yy, rr)]))
 
   -- Per Band
-  for_ bandsAndVids $ \(bb, vids) -> do
-    let subtitle = case bb of
-                      OtherBand -> "Showing recordings of other bands."
-                      _ | bb == soloist -> "Showing recordings of soloists."
-                        | otherwise        -> "Showing recordings of " <> longBand bb
-    renderToFile ("docs/" <> unpack (shortBand bb) <> ".html") (templateBase subtitle (buildSite CollectBands vids))
+  unless True $ do
+    putStrLn "Bands"
+    for_ bandsAndVids $ \(bb, vids) -> do
+      let subtitle = case bb of
+                        OtherBand -> "Other Bands"
+                        _ | bb == soloist -> "Soloists"
+                          | otherwise        -> longBand bb
+      renderToFile ("docs/" <> unpack (shortBand bb) <> ".html") (templateBase subtitle (buildSite CollectBands vids))
 
   -- Just the drumming
-  let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) $ DL.toList built
-  renderToFile "docs/drummers.html" (templateBase "Drummers" $ buildSite JustDoIt justDrumming)
-
+  -- let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) $ DL.toList built
+  -- renderToFile "docs/drummers.html" (templateBase "Drummers" $ buildSite JustDoIt justDrumming)
+  putStrLn "Done"
   callCommand "open -g docs/index.html"
 
 renderToCsv :: Foldable t => FilePath -> t VidKey -> IO ()
@@ -123,13 +128,13 @@ dispError :: Uncategorised -> [Text]
 dispError (Uncategorised vu reason) =
     [(unChannel $ _videoChannel vu), _videoTitle vu, reason, videoUrl vu]
 
-runUser :: YoutubeApiKey -> Query -> IO (DL.DList Uncategorised, DL.DList VidKey)
+runUser :: YoutubeApiKey -> Query -> IO (S.Seq Uncategorised, S.Seq VidKey)
 runUser apiKey u = do
   print ("running-start" :: Text, u)
   us <- cacheVideoQuery apiKey u
   print ("running-end" :: Text, u)
   let process vu = (_Left %~ Uncategorised vu) . extractKey $ vu
-  pure . over _2 DL.fromList . over _1 DL.fromList . partitionEithers . fmap process $ us
+  pure . over _2 S.fromList . over _1 S.fromList . partitionEithers . fmap process $ us
 
 data Uncategorised =
   Uncategorised Video Text

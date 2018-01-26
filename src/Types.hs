@@ -95,6 +95,7 @@ data Video' a = Video
   , _videoDescription :: !Text
   , _videoPublishedAt :: !UTCTime
   , _videoChannel     :: !Channel
+  , _videoThumbnail   :: !Text
   , _videoExt         :: a
   } deriving (Eq, Show, Read, Ord)
 

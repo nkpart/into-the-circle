@@ -34,6 +34,7 @@ contentPage subTitle site@(Site s) = do
       link_ [ rel_ "stylesheet" , href_ "https://unpkg.com/purecss@0.6.2/build/pure-min.css" ]
       link_ [ rel_ "stylesheet", href_ "https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css"]
       link_ [ rel_ "stylesheet", href_ "https://s3-us-west-2.amazonaws.com/colors-css/2.2.0/colors.min.css"]
+      link_ [ rel_ "stylesheet", href_ "https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css"]
       link_ [ rel_ "stylesheet", href_ "basics.css"]
       link_ [ rel_ "stylesheet", href_ "content.css"]
 
@@ -42,23 +43,31 @@ contentPage subTitle site@(Site s) = do
       div_ [class_ "title pure-g"] $ do
         div_ [class_ "white bg-navy pure-u-1"] $ do
           div_ [class_ "pure-u-1 centered"] $ do
-            (h1_ [class_ "mega-biggen"] "Into the Circle")
-            p_ [class_ "embiggen"] $ toHtml subTitle
-            h3_ [class_ "small-caps"] $
-                a_ [href_ "index.html", class_ "embiggen bold white"] "back to the index"
+            (h1_ [class_ "mega-biggen"] $ toHtml subTitle)
+            -- h3_ [class_ "small-caps"] $
+
 
       -- This is the sidebar
       div_ $ do
-        div_ [class_ "sidebar navy"] $
-          div_ [class_ "centered"] $ do
-            a_ [href_ "index.html"] $
-              img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+        div_ [class_ "lightest-grey sidebar navy"] $
+          div_ [class_ ""] $ do
+            div_ [class_ "centered"] $ do
+              a_ [href_ "index.html"] $
+                img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+            div_ [class_ ""] $ do
+              ul_ [class_ "pure-menu-list"] $
+                li_ [class_ "pure-menu-item"] $ do
+                  a_ [href_ "index.html", class_ "pure-menu-link"] $ do
+                    i_ [class_ "fa fa-home pr-1"] mempty
+                    "Home"
             div_ [class_ "pure-menu"] $ do
               F.for_ (compsByYear site) $ \(Year y, cs) -> do
+                --- YEAR ---
                 ul_ [class_ "pure-menu-list"] $
                   li_ [class_ "pure-menu-item"] $ do
                     a_ [class_ "pure-menu-link navy bold hover-white embiggen", href_ ("#"<> (T.pack (show y))) ] (toHtml (show y))
                     F.for_ cs $ \(Comp c, _) ->
+                      --- COMP ---
                       a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
 
       -- This is the main body
@@ -139,8 +148,6 @@ renderYear :: (Down Year, _) -> Html ()
 renderYear (Down (Year y), inner) =
       div_ [class_ "pure-u-1"] $ do
         a_ [name_ (T.pack (show y))] mempty
-        div_ [class_ "pure-u-1 pure-u-md-1-3 align-right bg-maroon white"] (h1_ (toHtml (show y)))
-        div_ [class_ "pure-u-1 pure-u-md-2-3 bg-maroon jobby"] (h1_ blankSpan)
         div_ (foldMap (renderComp (Year y)) inner)
 
 blankSpan :: Html ()
@@ -148,12 +155,12 @@ blankSpan = span_ (toHtmlRaw ("&nbsp;"::String))
 
 renderComp :: Year -> ((Comp, UTCTime), _) -> Html ()
 renderComp (Year y) ((Comp c, _), inner) =
+  div_ $
   do
+    div_ [class_ "pure-u-1 bg-maroon white sticky"] $ do
+      div_ [class_ "pl-2"] $ (h1_ ((toHtml (show y) <> " - " <> toHtml c)))
     a_ [name_ (anchor y c)] mempty
-    div_ [class_ "pure-u-1 pure-u-md-1-3 align-right upper"] $ do
-     h2_ (toHtml c)
-     -- h3_ (toHtml $ formatTime defaultTimeLocale "%Y-%m-%d" cd )
-    div_ [class_ "pure-u-1 pure-u-md-2-3"] (div_ [class_ "pl-2"] $ foldMap renderBand inner)
+    div_ [class_ "pure-u-1"] (div_ [class_ ""] $ foldMap renderBand inner)
 
 anchor :: Int -> T.Text -> T.Text
 anchor y c =
@@ -161,10 +168,13 @@ anchor y c =
 
 renderBand :: (Maybe Band, _) -> Html ()
 renderBand (mb, inner) =
+  div_ $
   do
   F.for_ mb $ \b ->
-    h3_ [class_ ""] (toHtml $ longBand b)
-  div_ (ul_ $ foldMap renderCorp inner)
+
+    div_ [class_ "sticky sticky-2 pure-u-1 lightest-grey"] $ do
+      h3_ [class_ "pl-2"] (toHtml $ longBand b)
+  div_ [class_ "pl-2"] (ul_ $ foldMap renderCorp inner)
 
 renderCorp :: (Corp, _) -> Html ()
 renderCorp (c,v) = foldMap (renderSet c) v
