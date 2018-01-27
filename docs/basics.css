@@ -20,6 +20,30 @@
     text-align: center;
 }
 
+.footer {
+    color: grey;
+    font-size: smaller;
+    padding: 1em;
+}
+
+.sticky {
+    position: -webkit-sticky;
+position: -moz-sticky;
+position: -ms-sticky;
+position: -o-sticky;
+position: sticky;
+/* this is the height of the top menus */
+top: 140px; 
+height: 90px;
+z-index: 12;
+}
+
+.sticky-2 {
+    top: 230px;
+    height: 4em;
+    z-index: 10;
+}
+
 
 .nowrap {
   white-space: nowrap;
@@ -54,6 +78,14 @@
     padding-bottom: 1em;
 }
 
+.pl-1 {
+    padding-left: 1em;
+}
+
+.pr-1 {
+    padding-right: 1em;
+}
+
 .svg-fill-white path {
     fill: white;
 }
@@ -82,4 +114,8 @@
 
 .hover-blue:hover {
     background: #7FDBFF;
+}
+
+.lightest-grey {
+    background: #f5f5f5;
 }

@@ -1,10 +1,10 @@
-
-
-.jobby { display: none; }
+body {
+    /* background: #f5f5f5; */
+}
 
 li {
     list-style: none;
-}
+}   
 
 .smaller-text {
     font-size: 90%;
@@ -18,7 +18,18 @@ ul { padding: 0em }
 
 @media (min-width: 48em) {
     .align-right { text-align: right; }
-    .jobby { display: inline-flex; }
+}
+
+.uptown {
+    height: 140px;
+    z-index: 15;
+}
+
+.downtown {
+    position: absolute;
+    top: 140px;
+    width: 100%;
+    background: white;
 }
 
 .content a {
@@ -35,30 +46,69 @@ ul { padding: 0em }
     text-decoration: underline;
 }
 
-
 @media (min-width: 48em) {
     .content {
         margin-left: 200px;
     }
 
-    .title { padding-left: 200px; }
+    .title { margin-left: 200px; }
 
     .sidebar {
         position: fixed;
         left: 200px;
         margin-left: -200px;
         width: 200px;
-        top: 0;
-        bottom: 4em;
+        /* This is the height of the upper */
+        top: 140px; 
+        bottom: 0em;
         overflow-y: scroll;        
         overflow-x: hidden;
+        padding-bottom: 5em;
+        border-right: 1px solid lightgray;
     }
 
     .sidebar li a {
         white-space: normal;
     }
+}
 
-    .footer {   
-    /*height: 1.5em;*/
-    }
+/* This is a video bit */
+.test {
+    width: 320px;
+    height: 280px;
+    display: inline-table;
+    /* margin: 0; */
+    margin: 0.1em;
+}
+
+.uptown {
+    position: fixed;
+    height: 140px;
+    width: 100%;
+}
+
+.test-logo {
+    width: 200px;
+    background: #f5f5f5;
+    height: 140px;
+    text-align: center;
+    border-bottom: 1px solid lightgray;
+    float: left;
+}
+
+.test-menus {
+    height: 140px;
+    background: #f5f5f5;
+    border-bottom: 1px solid lightgray;
+    /* text-align: center; */
+    /* vertical-align: middle; */
+}
+
+.year-menu {
+    float: left;
+}
+
+.band-menu {
+    float: left;
+
 }

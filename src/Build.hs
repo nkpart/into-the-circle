@@ -77,7 +77,7 @@ usersOfInterest =
 main :: IO ()
 main = do
   apiKey <- YoutubeApiKey . pack <$> getEnv "YOUTUBE_API_KEY"
-  (missing, built) <- fold <$> traverse (runUser apiKey) usersOfInterest
+  (missing, built) <- fold <$> traverse (runUser apiKey) (take 5 usersOfInterest)
   -- let missing = S.take 5 missing'
       -- built = S.take 3 built'
 
@@ -117,7 +117,7 @@ main = do
   -- let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) $ DL.toList built
   -- renderToFile "docs/drummers.html" (templateBase "Drummers" $ buildSite JustDoIt justDrumming)
   putStrLn "Done"
-  callCommand "open -g docs/2017.html"
+  callCommand "open -g docs/index.html"
 
 renderToCsv :: Foldable t => FilePath -> t VidKey -> IO ()
 renderToCsv fp vids =

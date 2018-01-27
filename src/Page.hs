@@ -50,22 +50,11 @@ contentPage subTitle years bands site@(Site s) = do
           div_ [class_ "white bg-navy pure-u-1"] $ do
             div_ [class_ "pure-u-1 centered"] $ do
               (h1_ [class_ "mega-biggen"] $ toHtml subTitle)
-              -- h3_ [class_ "small-caps"] $
-
 
         -- This is the sidebar
         div_ $ do
-          div_ [class_ "lightest-grey sidebar navy"] $
+          div_ [class_ "lightest-grey sidebar navy"] $ do
             div_ [class_ ""] $ do
-              -- div_ [class_ "centered"] $ do
-                -- a_ [href_ "index.html"] $
-                  -- img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
-              -- div_ [class_ ""] $ do
-              --   ul_ [class_ "pure-menu-list"] $
-              --     li_ [class_ "pure-menu-item"] $ do
-              --       a_ [href_ "index.html", class_ "pure-menu-link"] $ do
-              --         i_ [class_ "fa fa-home pr-1"] mempty
-              --         "Home"
               div_ [class_ "pure-menu"] $ do
                 F.for_ (compsByYear site) $ \(Year y, cs) -> do
                   --- YEAR ---
@@ -75,17 +64,18 @@ contentPage subTitle years bands site@(Site s) = do
                       F.for_ cs $ \(Comp c, _) ->
                         --- COMP ---
                         a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
+            div_ [class_ "footer"] $
+              "Built by nkpart@gmail.com, 2017."
 
         -- This is the main body
         div_ [class_ "content pure-g navy"] $
           F.for_ s renderYear
 
-        footer
         rawTracking
 
 
 indexPage :: [Query] -> [Year] -> [Band] -> Html ()
-indexPage qs allYears allBands = do
+indexPage qs years bands = do
   doctype_
   html_ $ do
     head_ $ do
@@ -96,40 +86,25 @@ indexPage qs allYears allBands = do
       link_ [ rel_ "stylesheet", href_ "https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css"]
       link_ [ rel_ "stylesheet", href_ "https://s3-us-west-2.amazonaws.com/colors-css/2.2.0/colors.min.css"]
       link_ [ rel_ "stylesheet", href_ "basics.css"]
-      link_ [ rel_ "stylesheet", href_ "index.css"]
+      link_ [ rel_ "stylesheet", href_ "content.css"]
     body_ [class_ ""] $ do
-      -- This is the header
-      div_ [class_ "title pure-g"] $ do
-        div_ [class_ "white bg-navy pure-u-1"] $
-         do div_ [class_ "pure-u-1 centered"] $ do
-              img_ [class_ "pt-2", width_ "120px", height_ "120px", src_ "circles-white.svg" ]
-              (h1_ [class_ "mega-biggen"] "Into the Circle")
+      div_ [class_ "uptown"] $ upper years bands
+      div_ [class_ "downtown"] $ do
+        -- This is the sidebar
+        div_ $ do
+          div_ [class_ "lightest-grey sidebar navy"] $
+            div_ [class_ "footer"] $
+              "Built by nkpart@gmail.com, 2018."
 
-            div_ [class_ "pure-u-1 pure-g"] $ do
-              div_ [class_ "pure-u-1-5"] $ " "
-              div_ [class_ "silver pure-u-3-5"] $ do
-                details qs
-              div_ [class_ "pure-u-1-5"] $ " "
+        -- This is the main body
+        div_ [class_ "content pure-g navy"] $
+          div_ [class_ "bg-white pure-u-1 pl-2"] $
+            do div_ [class_ "pure-u-1"] $ do
+                  --  img_ [class_ "pt-2", width_ "120px", height_ "120px", src_ "circles.svg" ]
+                   (h1_ [class_ "mega-biggen"] "Into the Circle")
+               div_ [class_ "pure-u-1 pure-g"] $ do
+                div_ [class_ "details"] $ details qs
 
-      div_ [class_ "content pure-g navy"] $ do
-        div_ [class_ "pure-u-1 pure-u-md-1-2 centered"] $ do
-          div_ [class_ "squish-big-left  bg-maroon white"] $ do
-            div_ [class_ "pure-u-1"] $ h1_ "Years"
-          div_ [class_ "squish-big-left"] $ do
-            div_ $ do
-                F.for_ allYears $ \(Year y) -> do
-                  p_ $
-                    a_ [class_ "bold embiggen", href_ (T.pack (show y) <> ".html")] (toHtml (show y))
-
-        div_ [class_ "pure-u-1 pure-u-md-1-2 centered"] $ do
-          div_ [class_ "squish-big-right bg-maroon white"] $ do
-            div_ [class_ "pure-u-1"] $ h1_ "Bands"
-          div_ [class_ "squish-big-right"] $ do
-            div_ $ do
-                F.for_ allBands $ \bb -> do
-                  p_ $
-                    a_ [class_ "bold nowrap", href_ (shortBand bb <> ".html")] (toHtml (longBand bb))
-      footer
       rawTracking
 
 yearPageUri :: Year -> T.Text
@@ -158,7 +133,7 @@ upper years bands = do
 
   div_ [class_ "test-logo"] $
     a_ [href_ "index.html"] $ img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
-  div_ [class_ "test-menus"] $ do
+  div_ [class_ "test-menus black bold"] $ do
     div_ [class_ "pure-menu year-menu", style_ "display: inline-block;"] $ do
       li_ [class_ "pure-menu-item pure-menu-has-children pure-menu-allow-hover"] $ do
         a_ [href_ "#", class_ "pure-menu-link"] "2011-2017"
@@ -200,6 +175,7 @@ details qs =
   in
   do
   p_ "This is an index of recordings made of pipe bands at major and domestic competitions."
+  p_ $ b_ "Use the menus at the top to browse by Year, or by Band (split by region to make the lists a little shorter)."
   p_ $
    do "Here you can find content by "
       sequence_ (imap r $ qs)
@@ -271,7 +247,3 @@ rawTracking = toHtmlRaw $ (id :: String -> String) "\
  \ ga('send', 'pageview');\
  \\
  \</script>"
-
-footer :: Html ()
-footer =  div_ [class_ "pure-u-1 bg-silver border-top border--grey p1 centered gray footer"]
-            "Built by nkpart@gmail.com, 2017."
