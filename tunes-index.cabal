@@ -41,6 +41,7 @@ library
                        , pipes
                        , dlist
                        , transformers
+                       , friendly-time
 
 executable build
   main-is:             src/Build.hs
