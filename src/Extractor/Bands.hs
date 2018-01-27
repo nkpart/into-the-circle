@@ -90,37 +90,43 @@ band =
     , "pipes and drums" `isLow` otherBand
     ]
 
-soloist = Band "Soloists"
+soloist = Band "Soloists" rotw
 
 -- TODO: Bands have grades, but they changes Year to Year
-_78thsFraserHighlanders = Band "78th Fraser Highlanders"
-_78thHalifax = Band "78th Halifax Citadel Pipe Band"
-auckland = Band "Auckland & District Pipe Band"
-blearyAndDistrict = Band "Bleary and District Pipe Band"
-boghall = Band "Boghall and Bathgate Caledonia Pipe Band"
-canterbury = Band "Canterbury Caledonian Pipe Band"
-cullybackey = Band "Cullybackey Pipe Band"
-dowco = Band "Dowco Triumph Street Pipe Band"
-fifeConstabulary = Band "Fife Constabulary Pipe Band"
-fmm = Band "Field Marshal Montgomery"
-glasgowPolice = Band "Glasgow Police Pipe Band"
-glasgowSkye = Band "The Glasgow Skye Association"
-inveraray = Band "Inveraray & District Pipe Band"
-laScots = Band "LA Scots Pipe Band"
-lothianAndBorders = Band "Lothian and Borders Police Pipe Band"
-manawatu = Band "Manawatu Scottish Pipe Band"
-nzpb = Band "New Zealand Police Pipe Band"
-peel = Band "Peel Regional Police Pipe Band"
-policeScotlandFife = Band "Police Scotland Fife"
-psni = Band "Pipes and Drums of the PSNI"
-ravara = Band "Ravara Pipe Band"
-sfu = Band "Simon Fraser University Pipe Band"
-shotts = Band "Shotts and Dykehead Caledonia"
-slot = Band "St Laurence O'Toole"
-sos = Band "Spirit of Scotland"
-sppb = Band "Scottish Power Pipe Band"
-strathclyde = Band "Strathclyde Police Pipe Band"
-theVale = Band "The Vale of Atholl Pipe Band"
-toronto = Band "Toronto Police Pipe Band"
-vppb = Band "Victoria Police Pipe Band"
+_78thsFraserHighlanders = Band "78th Fraser Highlanders" northAmerica
+_78thHalifax = Band "78th Halifax Citadel Pipe Band" northAmerica
+auckland = Band "Auckland & District Pipe Band" nzAu
+blearyAndDistrict = Band "Bleary and District Pipe Band" ukIreland
+boghall = Band "Boghall and Bathgate Caledonia Pipe Band" ukIreland
+canterbury = Band "Canterbury Caledonian Pipe Band" nzAu
+cullybackey = Band "Cullybackey Pipe Band" ukIreland
+dowco = Band "Dowco Triumph Street Pipe Band" northAmerica
+fifeConstabulary = Band "Fife Constabulary Pipe Band" ukIreland
+fmm = Band "Field Marshal Montgomery" ukIreland
+glasgowPolice = Band "Glasgow Police Pipe Band" ukIreland
+glasgowSkye = Band "The Glasgow Skye Association" ukIreland
+inveraray = Band "Inveraray & District Pipe Band" ukIreland
+laScots = Band "LA Scots Pipe Band" northAmerica
+lothianAndBorders = Band "Lothian and Borders Police Pipe Band" ukIreland
+manawatu = Band "Manawatu Scottish Pipe Band" nzAu
+nzpb = Band "New Zealand Police Pipe Band" nzAu
+peel = Band "Peel Regional Police Pipe Band" northAmerica
+policeScotlandFife = Band "Police Scotland Fife" ukIreland
+psni = Band "Pipes and Drums of the PSNI" ukIreland
+ravara = Band "Ravara Pipe Band" ukIreland
+sfu = Band "Simon Fraser University Pipe Band" northAmerica
+shotts = Band "Shotts and Dykehead Caledonia" ukIreland
+slot = Band "St Laurence O'Toole" ukIreland
+sos = Band "Spirit of Scotland" ukIreland
+sppb = Band "Scottish Power Pipe Band" ukIreland
+strathclyde = Band "Strathclyde Police Pipe Band" ukIreland
+theVale = Band "The Vale of Atholl Pipe Band" ukIreland
+toronto = Band "Toronto Police Pipe Band" northAmerica
+vppb = Band "Victoria Police Pipe Band" nzAu
 otherBand = OtherBand
+
+
+northAmerica = Region "North America"
+ukIreland = Region "UK & Ireland"
+nzAu = Region "New Zealand & Australia"
+rotw = Region "Rest of the World"

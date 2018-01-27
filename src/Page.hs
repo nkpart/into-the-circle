@@ -8,11 +8,15 @@ module Page where
 
 import           Control.Lens
 import qualified Data.Foldable   as F (for_)
+import           Data.List       (sort)
+import qualified Data.Map        as M
+import           Data.Maybe      (isJust)
 import           Data.Monoid     ((<>))
 import           Data.Ord        (Down (..))
 import           Data.Sequence   (Seq)
 import qualified Data.Text       as T (Text, intercalate, pack, words)
 import           Data.Time
+import           Extractor.Bands
 import           ISO8601Duration
 import           Lucid
 import           Types
@@ -23,8 +27,8 @@ compsByYear (Site s) =
   where
   getDown (Down a) = a
 
-contentPage :: T.Text -> Site (Seq Video) -> Html ()
-contentPage subTitle site@(Site s) = do
+contentPage :: T.Text -> [Year] -> [Band] -> Site (Seq Video) -> Html ()
+contentPage subTitle years bands site@(Site s) = do
   doctype_
   html_ $ do
     head_ $ do
@@ -39,43 +43,45 @@ contentPage subTitle site@(Site s) = do
       link_ [ rel_ "stylesheet", href_ "content.css"]
 
     body_ [class_ ""] $ do
+      div_ [class_ "uptown"] $ upper years bands
+      div_ [class_ "downtown"] $ do
       -- This is the header
-      div_ [class_ "title pure-g"] $ do
-        div_ [class_ "white bg-navy pure-u-1"] $ do
-          div_ [class_ "pure-u-1 centered"] $ do
-            (h1_ [class_ "mega-biggen"] $ toHtml subTitle)
-            -- h3_ [class_ "small-caps"] $
+        div_ [class_ "title pure-g"] $ do
+          div_ [class_ "white bg-navy pure-u-1"] $ do
+            div_ [class_ "pure-u-1 centered"] $ do
+              (h1_ [class_ "mega-biggen"] $ toHtml subTitle)
+              -- h3_ [class_ "small-caps"] $
 
 
-      -- This is the sidebar
-      div_ $ do
-        div_ [class_ "lightest-grey sidebar navy"] $
-          div_ [class_ ""] $ do
-            div_ [class_ "centered"] $ do
-              a_ [href_ "index.html"] $
-                img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+        -- This is the sidebar
+        div_ $ do
+          div_ [class_ "lightest-grey sidebar navy"] $
             div_ [class_ ""] $ do
-              ul_ [class_ "pure-menu-list"] $
-                li_ [class_ "pure-menu-item"] $ do
-                  a_ [href_ "index.html", class_ "pure-menu-link"] $ do
-                    i_ [class_ "fa fa-home pr-1"] mempty
-                    "Home"
-            div_ [class_ "pure-menu"] $ do
-              F.for_ (compsByYear site) $ \(Year y, cs) -> do
-                --- YEAR ---
-                ul_ [class_ "pure-menu-list"] $
-                  li_ [class_ "pure-menu-item"] $ do
-                    a_ [class_ "pure-menu-link navy bold hover-white embiggen", href_ ("#"<> (T.pack (show y))) ] (toHtml (show y))
-                    F.for_ cs $ \(Comp c, _) ->
-                      --- COMP ---
-                      a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
+              -- div_ [class_ "centered"] $ do
+                -- a_ [href_ "index.html"] $
+                  -- img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+              -- div_ [class_ ""] $ do
+              --   ul_ [class_ "pure-menu-list"] $
+              --     li_ [class_ "pure-menu-item"] $ do
+              --       a_ [href_ "index.html", class_ "pure-menu-link"] $ do
+              --         i_ [class_ "fa fa-home pr-1"] mempty
+              --         "Home"
+              div_ [class_ "pure-menu"] $ do
+                F.for_ (compsByYear site) $ \(Year y, cs) -> do
+                  --- YEAR ---
+                  ul_ [class_ "pure-menu-list"] $
+                    li_ [class_ "pure-menu-item"] $ do
+                      a_ [class_ "pure-menu-link navy bold hover-white embiggen", href_ ("#"<> (T.pack (show y))) ] (toHtml (show y))
+                      F.for_ cs $ \(Comp c, _) ->
+                        --- COMP ---
+                        a_ [class_ "pure-menu-link blue hover-white", href_ ("#"<> anchor y c ) ] (toHtml c)
 
-      -- This is the main body
-      div_ [class_ "content pure-g navy"] $
-        F.for_ s renderYear
+        -- This is the main body
+        div_ [class_ "content pure-g navy"] $
+          F.for_ s renderYear
 
-      footer
-      rawTracking
+        footer
+        rawTracking
 
 
 indexPage :: [Query] -> [Year] -> [Band] -> Html ()
@@ -120,11 +126,68 @@ indexPage qs allYears allBands = do
             div_ [class_ "pure-u-1"] $ h1_ "Bands"
           div_ [class_ "squish-big-right"] $ do
             div_ $ do
-                F.for_ allBands $ \band -> do
+                F.for_ allBands $ \bb -> do
                   p_ $
-                    a_ [class_ "bold nowrap", href_ (shortBand band <> ".html")] (toHtml (longBand band))
+                    a_ [class_ "bold nowrap", href_ (shortBand bb <> ".html")] (toHtml (longBand bb))
       footer
       rawTracking
+
+yearPageUri :: Year -> T.Text
+yearPageUri (Year y) =
+  (T.pack (show y) <> ".html")
+
+bandPageUri :: Band -> T.Text
+bandPageUri bb = shortBand bb <> ".html"
+
+upper :: [Year] -> [Band] -> Html ()
+upper years bands = do
+  let
+      after2011 = filter (\(Year x) -> x >= 2011) years
+      from2001_2010 = filter (\(Year x) -> x >= 2001 && x < 2011) years
+      before2001 = filter (\(Year x) -> x < 2001) years
+
+      rr OtherBand    = (Nothing, [OtherBand])
+      rr b@(Band _ r) | b == soloist = (Nothing, [b])
+                      | otherwise = (Just r, [b])
+      allByRegion =
+        M.fromListWith (<>) (fmap rr bands)
+
+      (bandsByRegion, rests) = M.partitionWithKey (\k _ -> isJust k) allByRegion
+      others :: [Band]
+      others = M.elems rests >>= id
+
+  div_ [class_ "test-logo"] $
+    a_ [href_ "index.html"] $ img_ [class_ "pt-1", width_ "100px", height_ "100px", src_ "circles.svg" ]
+  div_ [class_ "test-menus"] $ do
+    div_ [class_ "pure-menu year-menu", style_ "display: inline-block;"] $ do
+      li_ [class_ "pure-menu-item pure-menu-has-children pure-menu-allow-hover"] $ do
+        a_ [href_ "#", class_ "pure-menu-link"] "2011-2017"
+        ul_ [class_ "pure-menu-children"] $
+          F.for_ after2011 $ \y -> do
+            li_ [class_ "pure-menu-item"] $ a_ [href_ (yearPageUri y), class_ "pure-menu-link"] (toHtml . show . unYear $ y)
+      li_ [class_ "pure-menu-item pure-menu-has-children pure-menu-allow-hover"] $ do
+         a_ [href_ "#", class_ "pure-menu-link"] "2001-2010"
+         ul_ [class_ "pure-menu-children"] $
+          F.for_ from2001_2010 $ \y -> do
+            li_ [class_ "pure-menu-item"] $ a_ [href_ (yearPageUri y), class_ "pure-menu-link"] (toHtml . show . unYear $ y)
+
+      li_ [class_ "pure-menu-item pure-menu-has-children pure-menu-allow-hover"] $ do
+        a_ [href_ "#", class_ "pure-menu-link"] "Pre 2001"
+        ul_ [class_ "pure-menu-children"] $
+          F.for_ before2001 $ \y -> do
+            li_ [class_ "pure-menu-item"] $ a_ [href_ (yearPageUri y), class_ "pure-menu-link"] (toHtml . show . unYear $ y)
+
+    div_ [class_ "pure-menu band-menu", style_ "display: inline-block;"] $ do
+      F.for_ (M.toList bandsByRegion) $ \(region, bbs) -> do
+        li_ [class_ "pure-menu-item pure-menu-has-children pure-menu-allow-hover"] $ do
+          a_ [href_ "#", class_ "pure-menu-link"] (toHtml $ maybe "Other Bands" unRegion region)
+          ul_ [class_ "pure-menu-children"] $
+            F.for_ (sort bbs) $ \b -> do
+              li_ [class_ "pure-menu-item"] $ a_ [href_ (bandPageUri b), class_ "pure-menu-link"] (toHtml . longBand $ b)
+
+    div_ [class_ "pure-menu rest-menu", style_ "display: inline-block;"] $ do
+      F.for_ (sort others) $ \b -> do
+        li_ [class_ "pure-menu-item"] $ a_ [href_ (bandPageUri b), class_ "pure-menu-link"] (toHtml . longBand $ b)
 
 details :: [Query] -> Html ()
 details qs =
@@ -171,10 +234,9 @@ renderBand (mb, inner) =
   div_ $
   do
   F.for_ mb $ \b ->
-
     div_ [class_ "sticky sticky-2 pure-u-1 lightest-grey"] $ do
       h3_ [class_ "pl-2"] (toHtml $ longBand b)
-  div_ [class_ "pl-2"] (ul_ $ foldMap renderCorp inner)
+  div_ [class_ "pl-2"] (foldMap renderCorp inner)
 
 renderCorp :: (Corp, _) -> Html ()
 renderCorp (c,v) = foldMap (renderSet c) v
@@ -184,33 +246,18 @@ renderSet c (s, v) =
   foldMap (renderVid s c) v
 
 renderVid :: Set -> Corp -> Video -> Html ()
-renderVid s c vid =
+renderVid _s _c vid =
   let deets = _videoExt vid
   in
-   li_ [class_ "pb-03"] $ do
-                             div_ $ prefix
-                              <>
-                              (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid))
-
+   div_ [class_ "pb-03 test"] $ do
+                             div_ $ (a_ [href_ (videoUrl vid)] $ img_ [src_ (_videoThumbnail vid)] )
+                             div_ (a_ [href_ (videoUrl vid)] (toHtml $ _videoTitle vid))
                              div_ [class_ "smaller-text gray"] $ do
                                toHtml (durationString (_deetsDuration deets))
                                " - "
                                toHtml (_deetsViews deets <> " views")
                                " - "
-                               showSource (view videoChannel vid)
-  where
-        showSource = toHtml . unChannel
-        prefix :: Html ()
-        prefix = (case s of
-                    MSR     -> "MSR "
-                    Medley  -> "Medley "
-                    Unknown -> mempty) <>
-                 (case c of
-                   FullBand -> mempty
-                   Pipe     -> span_ [class_ "bold"] "Pipes "
-                   Drum     -> span_ [class_ "bold"] "Drums "
-                   )
-
+                               a_ [href_ "#"] $ toHtml (unChannel $ view videoChannel vid)
 
 rawTracking :: Html ()
 rawTracking = toHtmlRaw $ (id :: String -> String) "\

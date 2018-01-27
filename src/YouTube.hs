@@ -49,7 +49,7 @@ instance FromJSON VideoU where
           (snippet .: "description") <*>
           (snippet .: "publishedAt") <*>
           (Channel <$> snippet .: "channelTitle") <*>
-          ((snippet .: "thumbnails") >>= (.: "default") >>= (.: "url")) <*>
+          ((snippet .: "thumbnails") >>= (.: "medium") >>= (.: "url")) <*>
           pure ()
 
 instance ToJSON VideoU where

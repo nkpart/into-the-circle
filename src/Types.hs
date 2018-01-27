@@ -9,7 +9,7 @@ import           Data.Char       (isAlphaNum, isDigit)
 import           Data.Coerce     (coerce)
 import           Data.Foldable   (foldl')
 import           Data.List       (sortOn)
-import qualified Data.List       (filter)
+import qualified Data.List       (filter, reverse, sort)
 import qualified Data.List       as L ()
 import qualified Data.Map.Strict as M
 import           Data.Monoid     (mempty, (<>))
@@ -27,26 +27,32 @@ import           Prelude         (Eq, Foldable, Int, Maybe (..), Ord, Read,
 newtype Site a = Site ([(Down Year, [((Comp, UTCTime), [(Maybe Band, [(Corp, [(Set, a)])])])])])
   deriving (Eq, Show, Foldable)
 
+siteYears :: Site a -> [Year]
+siteYears (Site stuff) = Data.List.reverse . Data.List.sort . fmap (f . fst) $ stuff
+ where f (Down s) = s
+
 ------------------------------------------------------
 ---- Bit Types
 newtype Comp =
   Comp Text
   deriving (Eq, Show, Ord)
 
+data Region = Region {unRegion :: Text} deriving (Eq, Show, Ord)
+
 data Band =
-  Band Text | OtherBand
+  Band Text Region | OtherBand
   deriving (Eq, Show, Ord)
 
 shortBand :: Band -> Text
-shortBand (Band b)    = replace " " "-" . filter (\x -> isAlphaNum x || x == ' ') . toLower $ b
+shortBand (Band b _)    = replace " " "-" . filter (\x -> isAlphaNum x || x == ' ') . toLower $ b
 shortBand (OtherBand) = "other-band"
 
 longBand :: Band -> Text
-longBand (Band t)  = t
-longBand OtherBand = "Other Bands"
+longBand (Band t _) = t
+longBand OtherBand  = "Other Bands"
 
 newtype Year =
-  Year Int
+  Year { unYear :: Int }
   deriving (Eq, Show, Ord)
 
 data Set

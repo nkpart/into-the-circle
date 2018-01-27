@@ -10,7 +10,7 @@
 module Main where
 
 import           Control.Lens
-import           Control.Monad      (unless)
+-- import           Control.Monad      (unless)
 import           Data.Either        (partitionEithers)
 import           Data.Foldable      (fold, for_, toList)
 import qualified Data.Map.Strict    as M
@@ -78,6 +78,8 @@ main :: IO ()
 main = do
   apiKey <- YoutubeApiKey . pack <$> getEnv "YOUTUBE_API_KEY"
   (missing, built) <- fold <$> traverse (runUser apiKey) usersOfInterest
+  -- let missing = S.take 5 missing'
+      -- built = S.take 3 built'
 
   print (length missing)
   print (length built)
@@ -86,7 +88,7 @@ main = do
       years = s ^.. traverse . _1 . _Down
       bandsAndVids = M.toList . M.fromListWith mappend . toList . fmap (\v -> (_vidKeyBand v, S.singleton v)) $ built
       bands = fmap fst bandsAndVids
-      templateBase = contentPage
+      templateBase x = contentPage x years bands
 
   -- Statistics
   putStrLn "Stats"
@@ -103,20 +105,19 @@ main = do
     renderToFile ("docs/" <> show y' <> ".html") (templateBase ( "" <> (pack . show $ y')) (Site [(yy, rr)]))
 
   -- Per Band
-  unless True $ do
-    putStrLn "Bands"
-    for_ bandsAndVids $ \(bb, vids) -> do
-      let subtitle = case bb of
-                        OtherBand -> "Other Bands"
-                        _ | bb == soloist -> "Soloists"
-                          | otherwise        -> longBand bb
-      renderToFile ("docs/" <> unpack (shortBand bb) <> ".html") (templateBase subtitle (buildSite CollectBands vids))
+  putStrLn "Bands"
+  for_ bandsAndVids $ \(bb, vids) -> do
+    let subtitle = case bb of
+                      OtherBand -> "Other Bands"
+                      _ | bb == soloist -> "Soloists"
+                        | otherwise        -> longBand bb
+    renderToFile ("docs/" <> unpack (shortBand bb) <> ".html") (templateBase subtitle (buildSite CollectBands vids))
 
   -- Just the drumming
   -- let justDrumming = filter (\vk -> _vidKeyCorp vk == Drum) $ DL.toList built
   -- renderToFile "docs/drummers.html" (templateBase "Drummers" $ buildSite JustDoIt justDrumming)
   putStrLn "Done"
-  callCommand "open -g docs/index.html"
+  callCommand "open -g docs/2017.html"
 
 renderToCsv :: Foldable t => FilePath -> t VidKey -> IO ()
 renderToCsv fp vids =
